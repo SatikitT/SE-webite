@@ -1,4 +1,4 @@
 {
-    "appService.defaultWebAppToDeploy": "build",
+    "appService.defaultWebAppToDeploy": "react/build",
     "appService.deploySubpath": "build"
 }
