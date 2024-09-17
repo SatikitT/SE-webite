@@ -1,15 +1,23 @@
 {
-  "name": "testreactinaas",
+  "name": "react-web",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@azure/msal-browser": "^3.23.0",
+    "@azure/msal-react": "^2.0.22",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.7",
+    "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-jsx-a11y": "^6.10.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-react": "^7.36.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-scripts": "^3.0.1",
+    "react-router-dom": "^6.26.2",
+    "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

@@ -1,61 +1,44 @@
-/**
- * Configuration object to be passed to MSAL instance on creation. 
- * For a full list of MSAL.js configuration parameters, visit:
- * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md 
- */
-const msalConfig = {
+import { LogLevel } from "@azure/msal-browser";
+
+export const msalConfig = {
     auth: {
-        // 'Application (client) ID' of app registration in Azure portal - this value is a GUID
-        clientId: "71653c15-1f88-4d61-871c-c9a95ccc92da",
-        // Full directory URL, in the form of https://login.microsoftonline.com/<tenant-id>
-        authority: "https://login.microsoftonline.com/common",
-        // Full redirect URL, in form of http://localhost:3000
-        redirectUri: "http://localhost:3000/",
+        clientId: "594385b2-53da-40c5-ad8e-934677ba1cb5", // Replace with your client ID
+        authority: "https://login.microsoftonline.com/fd206715-7509-4ae5-9b96-76bb97886a84", // Replace with your tenant ID
+        redirectUri: "https://se-website-dpehdfcxbhebemes.southeastasia-01.azurewebsites.net/.auth/login/aad/callback", // Replace with your redirect URI
+        postLogoutRedirectUrl: '/',
+        navigateToLoginRequestUrl: false,
     },
     cache: {
         cacheLocation: "sessionStorage", // This configures where your cache will be stored
-        storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
+        storeAuthStateInCookie: true, // Set this to "true" if you are having issues on IE11 or Edge
     },
-    system: {	
-        loggerOptions: {	
-            loggerCallback: (level, message, containsPii) => {	
-                if (containsPii) {		
-                    return;		
-                }		
-                switch (level) {		
-                    case msal.LogLevel.Error:		
-                        console.error(message);		
-                        return;		
-                    case msal.LogLevel.Info:		
-                        console.info(message);		
-                        return;		
-                    case msal.LogLevel.Verbose:		
-                        console.debug(message);		
-                        return;		
-                    case msal.LogLevel.Warning:		
-                        console.warn(message);		
-                        return;		
-                }	
-            }	
-        }	
+    system: {
+        loggerOptions: {
+            loggerCallback: (level, message, containsPii) => {
+                if (containsPii) {
+                    return;
+                }
+                switch (level) {
+                    case LogLevel.Error:
+                        console.error(message);
+                        return;
+                    case LogLevel.Info:
+                        console.info(message);
+                        return;
+                    case LogLevel.Verbose:
+                        console.debug(message);
+                        return;
+                    case LogLevel.Warning:
+                        console.warn(message);
+                        return;
+                    default:
+                        return;
+                }
+            }
+        }
     }
 };
 
-/**
- * Scopes you add here will be prompted for user consent during sign-in.
- * By default, MSAL.js will add OIDC scopes (openid, profile, email) to any login request.
- * For more information about OIDC scopes, visit: 
- * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
- */
-const loginRequest = {
-    scopes: ["User.Read", "Calendars.Read"]
-};
-
-/**
- * Add here the scopes to request when obtaining an access token for MS Graph API. For more information, see:
- * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md
- */
-const tokenRequest = {
-    scopes: ["User.Read", "Mail.Read", "Calendars.Read"],
-    forceRefresh: false // Set this to "true" to skip a cached token and go to the server to get a new token
+export const loginRequest = {
+    scopes: ["User.Read"]
 };
