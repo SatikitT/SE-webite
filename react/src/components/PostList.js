@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const PostList = () => {
-  const { forumId } = useParams();
+  const { forumId, forumName } = useParams(); // Extract forumId and forumName from URL parameters
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const PostList = () => {
 
   return (
     <div>
-      <h1>Posts in Forum</h1>
+      <h1>Posts from {decodeURIComponent(forumName)}</h1>
       <div className="post-container">
         {posts.map((post) => (
           <div key={post.id} className="post-box">

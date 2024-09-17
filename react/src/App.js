@@ -19,7 +19,7 @@ function App() {
           path="/about"
           element={<About />}
         />
-        <Route path="/forumlist" element={<ForumList />} />
+        <Route path="/forums" element={<ForumList />} />
         <Route path="/forums/:forumId/posts" element={<PostList />} />
       </Routes>
     </Router>
