@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../api'; // Import API_BASE_URL from api.js
 
 const PostList = () => {
   const { forumId, forumName } = useParams(); // Extract forumId and forumName from URL parameters
@@ -9,7 +10,7 @@ const PostList = () => {
   useEffect(() => {
     const getPosts = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/forums/${forumId}/posts`);
+        const response = await axios.get(`${API_BASE_URL}/forums/${forumId}/posts/`); // Use API_BASE_URL
         setPosts(response.data);
       } catch (error) {
         console.error('Error fetching posts:', error);
