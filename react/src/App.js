@@ -20,7 +20,8 @@ function App() {
           element={<About />}
         />
         <Route path="/forums" element={<ForumList />} />
-        <Route path="/forums/:forumId/posts" element={<PostList />} />
+        <Route path="/forums/:forumId/posts/:forumName" element={<PostList />} />
+
       </Routes>
     </Router>
   );

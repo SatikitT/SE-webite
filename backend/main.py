@@ -14,13 +14,19 @@ dp_dependency = Annotated[Session, Depends(get_db)]
 Base.metadata.create_all(bind=engine)
 
 origins = [
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'http://10.66.8.120:3000', 
+    'https://se-website-dpehdfcxbhebemes.southeastasia-01.azurewebsites.net'
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"], 
+    allow_headers=["*"],
 )
+
 
 @app.post("/forums/")
 def create_forum(name: str, db: dp_dependency):

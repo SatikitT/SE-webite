@@ -23,7 +23,10 @@ const ForumList = () => {
       <ul>
         {forums.map((forum) => (
           <li key={forum.id}>
-            <Link to={`/forums/${forum.id}/posts`}>{forum.name}</Link>
+            {/* Encode the forum name to handle special characters in the URL */}
+            <Link to={`/forums/${forum.id}/posts/${encodeURIComponent(forum.name)}`}>
+              {forum.name}
+            </Link>
           </li>
         ))}
       </ul>
