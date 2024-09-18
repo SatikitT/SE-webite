@@ -1,3 +1,5 @@
+import os
+import uvicorn
 from typing import Annotated
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -57,3 +59,6 @@ def create_post(forum_id: int, title: str, content: str, db: dp_dependency):
 @app.get("/forums/{forum_id}/posts/")
 def read_posts(forum_id: int, db: dp_dependency):
     return db.query(Post).filter(Post.forum_id == forum_id).all()
+
+if __name__ == '__main__':
+    uvicorn.run('main:app', host='0.0.0.0', port=8000)
