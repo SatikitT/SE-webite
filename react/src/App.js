@@ -5,10 +5,11 @@ import About from './components/About';
 import Forum from './components/Forum';
 import Post from './components/Post';
 import AddPost from './components/AddPost';
+import CoopRoom from './components/CoopRoom';
 import './App.css';
 import { InteractionStatus, EventType } from "@azure/msal-browser";
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal, MsalProvider } from "@azure/msal-react";
-import { loginRequest } from './components/authConfig';
+import { loginRequest } from './components/AuthConfig';
 
 const WrappedView = () => {
   const { instance, inProgress } = useMsal();
@@ -51,13 +52,12 @@ const WrappedView = () => {
 
 const App = ({ instance }) => {
   useEffect(() => {
-    // Set active account on page load
+
     const accounts = instance.getAllAccounts();
     if (accounts.length > 0) {
       instance.setActiveAccount(accounts[0]);
     }
 
-    // Add event callback for login success
     const eventCallback = (event) => {
       if (event.eventType === EventType.LOGIN_SUCCESS && event.payload.account) {
         const account = event.payload.account;
@@ -86,11 +86,12 @@ const App = ({ instance }) => {
 
   return (
     <MsalProvider instance={instance}>
+      <WrappedView />
       <Router>
         <div>
-          <WrappedView />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/cooproom" element={<CoopRoom />} />
             <Route path="/about" element={<About />} />
             <Route path="/forums" element={<Forum />} />
             <Route path="forums/:forumId/posts/:postId" element={<Post />} />

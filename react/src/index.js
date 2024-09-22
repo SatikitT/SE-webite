@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { PublicClientApplication, EventType } from "@azure/msal-browser";
-import { msalConfig } from './components/authConfig';
+import { msalConfig } from './components/AuthConfig';
 
 // MSAL should be instantiated outside of the component tree to prevent it from being re-instantiated on re-renders.
 

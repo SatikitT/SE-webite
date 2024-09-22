@@ -1,101 +1,83 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title>Babylon Template</title>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Babylon Template</title>
 
-        <style>
-            #renderCanvas {
-                width: 80%;
-                height: 400px;
-            }
-        </style>
+    <style>
+        #renderCanvas {
+            width: 50%;
+            height: 500;
+        }
+    </style>
 
-        <script src="https://cdn.babylonjs.com/babylon.js"></script>
-        <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
 
-    </head>
+</head>
 
-   <body>
+<body>
     <p style="text-align: center;">Coop room</p>
     <div style="justify-content: center; display: flex;">
         <canvas id="renderCanvas"></canvas>
     </div>
-	
 
-	<script>
+    <script>
         const canvas = document.getElementById("renderCanvas");
         const engine = new BABYLON.Engine(canvas, true);
-        const createScene = function () {
+        let lastPickedMesh = null;
 
+        const createScene = function () {
             const scene = new BABYLON.Scene(engine);
 
-            const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2 - 3.14, Math.PI / 2.5 - 0.2, 10, new BABYLON.Vector3(0, 0, 0));
+            //scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
 
-            camera.setTarget(BABYLON.Vector3.Zero());
- 
+            const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2 - 3.14 , Math.PI / 2.5 - 0.2 - 10, 130, new BABYLON.Vector3(0, 0, 0));
+            camera.setTarget(new BABYLON.Vector3(0, 0, 0));
             camera.attachControl(canvas, true);
 
-            const light = new BABYLON.HemisphericLight("light", 
-                new BABYLON.Vector3(0, 1, 0), scene);
-
+            const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
             light.intensity = 0.7;
- 
-            // const shiba1 = BABYLON.SceneLoader.ImportMesh(
-            //     '',
-            //     '/',
-            //     'shiba.glb',
-            //     scene,
-            //     function(meshes){
-            //         const model = meshes[0];
-            //         model.position.y = 1;
-            //         model.position.x = -1;
-            //     }
-            // )
 
-            const shiba2 = BABYLON.SceneLoader.ImportMesh(
-                '',
-                '/',
-                'conference room .glb',
-                scene,
-                function(meshes){
-                    const model = meshes[0];
-                    model.position.y = 1;
-                    model.position.x = 1;
-                }
-            )
+            const room = BABYLON.SceneLoader.ImportMesh('', '/', 'room.glb', scene, function (meshes) {
+                const model = meshes[0];
+                model.position = new BABYLON.Vector3(20, 0, 25);
+            });
 
-            let count = 0;
-
-            scene.onPointerDown = function castRay() {
+            scene.onPointerDown = function () {
                 const hit = scene.pick(scene.pointerX, scene.pointerY);
-                if(hit.pickedMesh) {
-                    hit.pickedMesh.material = new BABYLON.StandardMaterial();
-                    count++;
-                    if(count%2==0){
-                        hit.pickedMesh.material.diffuseColor =  BABYLON.Color3.White();
-                    } else {
-                        hit.pickedMesh.material.diffuseColor =  BABYLON.Color3.Red();
-                    }  
+                
+                if (hit.pickedMesh) {
+                    if (lastPickedMesh && lastPickedMesh !== hit.pickedMesh) {
+                        lastPickedMesh.material.albedoColor = BABYLON.Color3.White();
+                    }
+                    
+                    hit.pickedMesh.material.albedoColor = BABYLON.Color3.Red();
+                    lastPickedMesh = hit.pickedMesh;
+                } else {
+                    if (lastPickedMesh) {
+                        lastPickedMesh.material.albedoColor = BABYLON.Color3.White();
+                        lastPickedMesh = null;
+                    }
                 }
-            }
+            };
 
-            // const ground = BABYLON.MeshBuilder.CreateGround("ground", 
-            //     {width: 6, height: 6}, scene);
+            //scene.debugLayer.show();
             return scene;
         };
-        const scene = createScene(); 
+
+        const scene = createScene();
 
         engine.runRenderLoop(function () {
-                scene.render();
+            scene.render();
         });
-        
-        window.addEventListener("resize", function () {
-                engine.resize();
-        });
-	</script>
 
-   </body>
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
+
+</body>
 
 </html>
