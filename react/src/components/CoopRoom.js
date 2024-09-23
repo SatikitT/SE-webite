@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import * as BABYLON from "@babylonjs/core";
 import "@babylonjs/loaders/glTF";
+import CoopCalendar from "./CoopCalendar";
 
 const CoopRoom = () => {
     const canvasRef = useRef(null); // Reference to the canvas
@@ -14,7 +15,7 @@ const CoopRoom = () => {
             const scene = new BABYLON.Scene(engine);
 
             // Optional: Set transparent background if needed
-            // scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
+            scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
 
             // Set up a camera (top-down view)
             const camera = new BABYLON.ArcRotateCamera(
@@ -78,10 +79,11 @@ const CoopRoom = () => {
 
     return (
         <>
-            <p style={{ textAlign: "center" }}>Coop room</p>
+            <h2 style={{textAlign: "center" }}>Co-op room reservation</h2>
             <div style={{ justifyContent: "center", display: "flex" }}>
-                <canvas ref={canvasRef} id="renderCanvas" style={{ width: "80%", height: "500px" }}></canvas>
+                <canvas ref={canvasRef} id="renderCanvas" style={{ width: "40%", height: "500px" }}></canvas>
             </div>
+            <CoopCalendar />
         </>
     );
 };
