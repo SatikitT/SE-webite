@@ -10,7 +10,7 @@ const CoopCalendar = () => {
 
     // Array of days, starting from Sunday
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    
+
     // State for controlling the week navigation
     const [weekOffset, setWeekOffset] = useState(0);
 
@@ -20,7 +20,8 @@ const CoopCalendar = () => {
         const first = current.getDate() - current.getDay() + weekOffset * 7; // Get Sunday of the current week
         return [...Array(7).keys()].map(i => {
             const day = new Date(current.setDate(first + i));
-            return day.toDateString();
+            // Format date as 'Mon 22 Sep'
+            return day.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
         });
     };
 
@@ -34,33 +35,44 @@ const CoopCalendar = () => {
                 <button onClick={() => setWeekOffset(weekOffset + 1)}>Next Week</button>
             </div>
 
-            {/* Calendar grid */}
-            <div className="calendar-grid" style={{ display: "grid", gridTemplateColumns: "repeat(8, 1fr)", gap: "1px", border: "1px solid #ddd" }}>
-                {/* First row - Days of the week */}
-                <div className="empty-cell"></div>
-                {getCurrentWeekDates().map((day, index) => (
-                    <div key={index} className="day-header" style={{ backgroundColor: "#f0f0f0", padding: "10px" }}>
-                        {days[index]} <br /> {day}
-                    </div>
-                ))}
-
-                {/* Time slots and grid cells for reservations */}
-                {hours.map((hour, hourIndex) => (
-                    <React.Fragment key={hourIndex}>
-                        {/* First column - Time Slots */}
-                        <div className="time-slot-header" style={{ backgroundColor: "#f0f0f0", padding: "10px" }}>
-                            {hour}
-                        </div>
-
-                        {/* Reservation cells for each day */}
-                        {days.map((day, dayIndex) => (
-                            <div key={`${dayIndex}-${hourIndex}`} className="time-slot" style={{ border: "1px solid #ddd", height: "40px" }}>
-                                {/* You can add reservation events or interactivity here */}
-                            </div>
+            {/* Calendar table */}
+            <table className="calendar-table" style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
+                <thead>
+                    {/* First row with time slots */}
+                    <tr>
+                        <td style={{ width: "100px", height: "50px", backgroundColor: "#f0f0f0" }}></td> {/* Empty top-left cell */}
+                        {hours.map((hour, index) => (
+                            <td key={index} style={{ height: "50px", backgroundColor: "#f0f0f0", border: "1px solid #ddd" }}>
+                                {hour}
+                            </td>
                         ))}
-                    </React.Fragment>
-                ))}
-            </div>
+                    </tr>
+                </thead>
+                <tbody>
+                    {/* Rows with days and reservation slots */}
+                    {getCurrentWeekDates().map((day, dayIndex) => (
+                        <tr key={dayIndex}>
+                            {/* Day header (left column) */}
+                            <td style={{ width: "100px", height: "30px", backgroundColor: "#f0f0f0", textAlign: "center", border: "1px solid #ddd" }}>
+                                {day}
+                            </td>
+                            {/* Reservation cells */}
+                            {hours.map((hour, hourIndex) => (
+                                <td
+                                    key={`${dayIndex}-${hourIndex}`}
+                                    style={{ height: "30px", border: "1px solid #ddd", cursor: "pointer" }}
+                                    onClick={() => {
+                                        // Add reservation handling logic here
+                                        alert(`Reserved at ${day} ${hour}`);
+                                    }}
+                                >
+                                    {/* You can add reservation events or interactivity here */}
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };
