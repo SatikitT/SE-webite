@@ -1,4 +1,5 @@
 import { LogLevel } from "@azure/msal-browser";
+import { PublicClientApplication, EventType } from "@azure/msal-browser";
 
 export const msalConfig = {
     auth: {
@@ -39,5 +40,8 @@ export const msalConfig = {
 };
 
 export const loginRequest = {
-    scopes: ["User.Read"]
-};
+    scopes: ["openid", "profile"], 
+  };
+
+export const msalInstance = new PublicClientApplication(msalConfig);
+

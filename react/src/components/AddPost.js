@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE_URL } from '../api';
 
-const AddPost = () => {
+const AddPost = ({ username }) => {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -11,7 +11,7 @@ const AddPost = () => {
   const [selectedForumId, setSelectedForumId] = useState('');
 
   useEffect(() => {
-    // Fetch forums to populate the dropdown
+
     const fetchForums = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/forums/`);
@@ -29,10 +29,12 @@ const AddPost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(`Username of the poster: ${username}`);
     try {
-      await axios.post(`${API_BASE_URL}/forums/${selectedForumId}/posts/?title=${title}&content=${content}`, {
+      await axios.post(`${API_BASE_URL}/forums/${selectedForumId}/posts/?title=${title}&content=${content}&username=${username}`, {
         title: title,
         content: content,
+        username: username,
       });
 
       navigate(`/forums`);

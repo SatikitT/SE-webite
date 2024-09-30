@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  background-color: white;
 }
 
 .App-logo {
@@ -72,3 +72,27 @@ input, textarea {
   margin: 8px 0;
 }
 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f8f9fa; /* Light background */
+  border-bottom: 1px solid #ddd; /* Optional border */
+}
+
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.nav-links li {
+  margin-right: 20px; /* Space between links */
+}
+
+.auth-container {
+  display: flex;
+  align-items: center;
+}

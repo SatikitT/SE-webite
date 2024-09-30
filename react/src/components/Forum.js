@@ -42,6 +42,7 @@ const Forum = () => {
               </Link>
             </h2>
             <p>{post.content}</p>
+            <p>Post created by {post.username}</p>
           </div>
         ))}
       </div>
