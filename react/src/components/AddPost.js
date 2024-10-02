@@ -44,7 +44,7 @@ const AddPost = ({ username }) => {
   };
 
   return (
-    <div>
+    <>
       <h1>Add Post</h1>
       <form onSubmit={handleSubmit}>
         <div>
@@ -80,7 +80,7 @@ const AddPost = ({ username }) => {
         </div>
         <button type="submit">Add Post</button>
       </form>
-    </div>
+    </>
   );
 };
 

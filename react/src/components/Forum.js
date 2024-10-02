@@ -1,4 +1,3 @@
-// src/components/Forum.js
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -28,8 +27,9 @@ const Forum = () => {
   }, []);
 
   return (
-    <div>
-      <h1>All Posts</h1>
+    <>
+      <div style={{ height: "5em" }}></div>
+      <h2>All Posts</h2>
       <button>
         <Link to="/add-post">Add Post</Link>
       </button>
@@ -46,7 +46,7 @@ const Forum = () => {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 };
 

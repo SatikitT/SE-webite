@@ -81,10 +81,10 @@ function Header() {
                             <Link to="/cooproom">Coop Room</Link>
                         </li>
                         <li className='navs-button'>
-                            <Link to="/about">About</Link>
+                            <Link to="/forums">Forum</Link>
                         </li>
                         <li className='navs-button'>
-                            <Link to="/forums">Forum</Link>
+                            <Link to="/about">About</Link>
                         </li>
                     </ul>
 

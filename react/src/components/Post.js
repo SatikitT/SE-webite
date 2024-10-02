@@ -56,7 +56,7 @@ const Post = () => {
   }
 
   return (
-    <div>
+    <>
       <h1>{post.title}</h1>
       <p>{post.content}</p>
       
@@ -80,7 +80,7 @@ const Post = () => {
           <button type="submit">Add Comment</button>
         </form>
       </div>
-    </div>
+    </>
   );
 };
 
