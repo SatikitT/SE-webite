@@ -39,7 +39,7 @@ const CoopRoom = () => {
             light.intensity = 1;
 
             // Load room model
-            BABYLON.SceneLoader.ImportMesh("", "/assets/", "room.glb", scene, function (meshes) {
+            BABYLON.SceneLoader.ImportMesh("", "/assets/", "kmitl.glb", scene, function (meshes) {
                 const model = meshes[0];
                 model.position = new BABYLON.Vector3(20, 0, 25);
             });
