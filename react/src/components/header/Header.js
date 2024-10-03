@@ -69,7 +69,7 @@ function Header() {
                 <div className='container'>
                     <div className='SElogo-container'>
                         <Link to='/'>
-                            <img src={logo} alt="SE Logo" height={'40em'} />
+                            <img src={logo} alt="SE Logo" height={'50em'} />
                         </Link>
                     </div>
 
@@ -82,6 +82,9 @@ function Header() {
                         </li>
                         <li className='navs-button'>
                             <Link to="/forums">Forum</Link>
+                        </li>
+                        <li className='navs-button'>
+                            <Link to="/map">Map</Link>
                         </li>
                         <li className='navs-button'>
                             <Link to="/about">About</Link>

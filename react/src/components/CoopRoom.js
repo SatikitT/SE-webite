@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as BABYLON from "@babylonjs/core";
 import "@babylonjs/loaders/glTF";
-import "./Tabs.css";
 
 const CoopRoom = () => {
     const canvasRef = useRef(null); // Reference to the canvas
@@ -38,30 +37,28 @@ const CoopRoom = () => {
             const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
             light.intensity = 1;
 
-            // Load room model
-            BABYLON.SceneLoader.ImportMesh("", "/assets/", "kmitl.glb", scene, function (meshes) {
+            BABYLON.SceneLoader.ImportMesh("", "/assets/", "room.glb", scene, function (meshes) {
                 const model = meshes[0];
                 model.position = new BABYLON.Vector3(20, 0, 25);
             });
 
-            // Handle mesh clicks
-            scene.onPointerDown = () => {
-                const hit = scene.pick(scene.pointerX, scene.pointerY);
+            // scene.onPointerDown = () => {
+            //     const hit = scene.pick(scene.pointerX, scene.pointerY);
 
-                if (hit.pickedMesh) {
-                    if (lastPickedMesh && lastPickedMesh !== hit.pickedMesh) {
-                        lastPickedMesh.material.albedoColor = BABYLON.Color3.White();
-                    }
+            //     if (hit.pickedMesh) {
+            //         if (lastPickedMesh && lastPickedMesh !== hit.pickedMesh) {
+            //             lastPickedMesh.material.albedoColor = BABYLON.Color3.White();
+            //         }
 
-                    hit.pickedMesh.material.albedoColor = BABYLON.Color3.Red();
-                    lastPickedMesh = hit.pickedMesh;
-                } else {
-                    if (lastPickedMesh) {
-                        lastPickedMesh.material.albedoColor = BABYLON.Color3.White();
-                        lastPickedMesh = null;
-                    }
-                }
-            };
+            //         hit.pickedMesh.material.albedoColor = BABYLON.Color3.Red();
+            //         lastPickedMesh = hit.pickedMesh;
+            //     } else {
+            //         if (lastPickedMesh) {
+            //             lastPickedMesh.material.albedoColor = BABYLON.Color3.White();
+            //             lastPickedMesh = null;
+            //         }
+            //     }
+            // };
 
             return scene;
         };

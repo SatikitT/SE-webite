@@ -6,6 +6,7 @@ import Forum from './components/Forum';
 import Post from './components/Post';
 import AddPost from './components/AddPost';
 import CoopRoom from './components/CoopRoom';
+import Map from './components/Map';
 import Header from './components/header/Header';
 import { MsalProvider } from "@azure/msal-react";
 import './App.css';
@@ -46,6 +47,7 @@ const App = ({ instance }) => {
           <Route path="/cooproom" element={<CoopRoom />} />
           <Route path="/about" element={<About />} />
           <Route path="/forums" element={<Forum />} />
+          <Route path="/map" element={<Map />} />
           <Route path="forums/:forumId/posts/:postId" element={<Post />} />
           <Route path="/add-post" element={<AddPost username={activeAccount ? activeAccount.name : ""} />} />
         </Routes>
