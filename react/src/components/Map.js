@@ -82,10 +82,10 @@ const Map = () => {
 
     return (
         <>
-            <div style={{ height: "5em" }}></div>
+            <div style={{ height: "7.4vh" }}></div>
 
             <div style={{ display: "flex", justifyContent: "center" }}>
-                <canvas ref={canvasRef} id="renderCanvas" style={{ width: "100%", height: "91.4vh" }}></canvas>
+                <canvas ref={canvasRef} id="renderCanvas" style={{ width: "100%", height: "93vh" }}></canvas>
 
                 {hoverInfo.name && (
                     <div

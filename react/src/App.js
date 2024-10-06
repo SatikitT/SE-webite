@@ -44,7 +44,7 @@ const App = ({ instance }) => {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/cooproom" element={<CoopRoom />} />
+          <Route path="/cooproom" element={<CoopRoom username={activeAccount ? activeAccount.name : ""}/>} />
           <Route path="/about" element={<About />} />
           <Route path="/forums" element={<Forum />} />
           <Route path="/map" element={<Map />} />

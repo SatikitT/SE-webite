@@ -4,7 +4,7 @@ import "@babylonjs/loaders/glTF";
 import { API_BASE_URL } from '../api';
 import axios from "axios";  // Import axios to communicate with the backend
 
-const CoopRoom = () => {
+const CoopRoom = ({ username }) => {
     const canvasRef = useRef(null); // Reference to the canvas
     const [searchParams, setSearchParams] = useState({
         date: "",
@@ -67,7 +67,7 @@ const CoopRoom = () => {
         };
 
         const updateMeshColors = (roomMeshMap) => {
-            if(availableSpaces.length > 0)
+            if (availableSpaces.length > 0)
                 Object.values(roomMeshMap).forEach(mesh => {
                     mesh.material.albedoColor = BABYLON.Color3.Red();
                 });
@@ -109,7 +109,7 @@ const CoopRoom = () => {
         try {
             const reservationData = {
                 room_number: room_number,
-                reserver: "User123", // Replace with actual username from logged-in user
+                reserver: username, // Replace with actual username from logged-in user
                 time_start: searchParams.startTime,
                 time_end: searchParams.endTime,
                 day: searchParams.date
@@ -124,30 +124,28 @@ const CoopRoom = () => {
 
     return (
         <>
-            <div style={{ height: "5vh" }}></div>
-            <div style={{ display: "flex", justifyContent: "center", paddingTop: "20px", height: "10vh" }}>
-                <div style={{ width: "80%", display: "flex", flexWrap: "wrap", gap: "20px", justifyContent: "flex-start" }}>
-                    <label style={{ display: "flex", alignItems: "center" }}>
-                        Day:
-                        <input type="date" name="date" value={searchParams.date} onChange={handleSearchChange} style={{ marginLeft: "10px" }} />
-                    </label>
-                    <label style={{ display: "flex", alignItems: "center", width: "200px" }}>
-                        Start&nbsp;time:
-                        <input type="time" name="startTime" value={searchParams.startTime} onChange={handleSearchChange} style={{ marginLeft: "10px" }} />
-                    </label>
-                    <label style={{ display: "flex", alignItems: "center" }}>
-                        End&nbsp;time:
-                        <input type="time" name="endTime" value={searchParams.endTime} onChange={handleSearchChange} style={{ marginLeft: "10px" }} />
-                    </label>
-                    <label style={{ display: "flex", alignItems: "center" }}>
-                        Seats:
-                        <input type="number" name="seats" value={searchParams.seats} onChange={handleSearchChange} style={{ marginLeft: "10px" }} />
-                    </label>
-                    <button onClick={fetchAvailableSpaces}>Check Availability</button>
-                </div>
+            <div style={{ height: "7.5vh" }}></div>
+            <div style={{ display: "flex", justifyContent: "center", height: "7.5vh", width: "80%", display: "flex", flexWrap: "wrap", gap: "20px"}}>
+                <label style={{ display: "flex", alignItems: "center" }}>
+                    Day:
+                    <input type="date" name="date" value={searchParams.date} onChange={handleSearchChange} style={{ marginLeft: "10px" }} />
+                </label>
+                <label style={{ display: "flex", alignItems: "center", width: "200px" }}>
+                    Start&nbsp;time:
+                    <input type="time" name="startTime" value={searchParams.startTime} onChange={handleSearchChange} style={{ marginLeft: "10px" }} />
+                </label>
+                <label style={{ display: "flex", alignItems: "center" }}>
+                    End&nbsp;time:
+                    <input type="time" name="endTime" value={searchParams.endTime} onChange={handleSearchChange} style={{ marginLeft: "10px" }} />
+                </label>
+                <label style={{ display: "flex", alignItems: "center" }}>
+                    Seats:
+                    <input type="number" name="seats" value={searchParams.seats} onChange={handleSearchChange} style={{ marginLeft: "10px" }} />
+                </label>
+                <button onClick={fetchAvailableSpaces} style={{ marginTop: "auto", marginBottom: "auto", height: "20px" }}>Check Availability</button>
             </div>
             <div style={{ display: "flex", height: "85vh" }}>
-                <div style={{ width: "20%", padding: "20px", backgroundColor: "#f5f5f5", overflowY: "auto" }}>
+                <div style={{ width: "20%", paddingLeft: "20px", backgroundColor: "#f5f5f5", overflowY: "auto" }}>
                     <h3>Available Spaces</h3>
                     {availableSpaces.map((space, index) => (
                         <div key={index} style={{ marginBottom: "10px" }}>
@@ -158,9 +156,8 @@ const CoopRoom = () => {
                     ))}
                 </div>
 
-                {/* BabylonJS Canvas */}
                 <div style={{ width: "80%", justifyContent: "center", display: "flex" }}>
-                    <canvas ref={canvasRef} id="renderCanvas" style={{ width: "100%", height: "85vh" }}></canvas>
+                    <canvas ref={canvasRef} id="renderCanvas" style={{ width: "100%" }}></canvas>
                 </div>
             </div>
         </>
