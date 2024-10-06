@@ -98,17 +98,22 @@ function Header() {
                             </button>
                         </UnauthenticatedTemplate>
                         <AuthenticatedTemplate>
-                            <a href="#profile">
-                                <img src={Profile} alt="profile" height={'40em'} />
-                            </a>
-                            <div className='dropdown-profile'>
-                                <a href="#profile">My Profile</a>
-                                <a href="#settings">Settings</a>
-                                <a href="#logout" onClick={handleLogout} style={{ color: 'red' }}>
-                                    Logout
+                            <p style={{marginRight: "10px"}}>Welcome, {activeAccount ? activeAccount.name : "User"}!</p>
+
+                            <div style={{height: "100%"}}>
+                                <a href="#profile">
+                                    <img src={Profile} alt="profile" height={'40em'} style={{marginTop: "40%"}} />
                                 </a>
+                                
+                                <div className='dropdown-profile'>
+                                    <a href="#profile">My Profile</a>
+                                    <a href="#settings">Settings</a>
+                                    <a href="#logout" onClick={handleLogout} style={{ color: 'red' }}>
+                                        Logout
+                                    </a>
+                                </div>
                             </div>
-                            <p>Welcome, {activeAccount ? activeAccount.name : "User"}!</p>
+
                         </AuthenticatedTemplate>
                     </div>
                 </div>

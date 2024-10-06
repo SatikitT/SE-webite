@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as BABYLON from "@babylonjs/core";
 import "@babylonjs/loaders/glTF";
+import { API_BASE_URL } from '../api';
+import axios from "axios";  // Import axios to communicate with the backend
 
 const CoopRoom = () => {
     const canvasRef = useRef(null); // Reference to the canvas
@@ -10,17 +12,27 @@ const CoopRoom = () => {
         endTime: "",
         seats: ""
     });
+    const [availableSpaces, setAvailableSpaces] = useState([]);
+    const [selectedRoom, setSelectedRoom] = useState(null); // Track selected room for reservation
+    const [roomMeshes, setRoomMeshes] = useState({}); // Store room mesh references
+
+    // Fetch available rooms based on search parameters
+    const fetchAvailableSpaces = async () => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/reservations/available-rooms/?day=${searchParams.date}&start_time=${searchParams.startTime}&end_time=${searchParams.endTime}`);
+            setAvailableSpaces(response.data);
+        } catch (error) {
+            console.error("Error fetching available rooms:", error);
+        }
+    };
 
     useEffect(() => {
         const canvas = canvasRef.current;
         const engine = new BABYLON.Engine(canvas, true); // Create BabylonJS engine
-        let lastPickedMesh = null;
 
         const createScene = () => {
             const scene = new BABYLON.Scene(engine);
-
-            // Set background color to light grey
-            scene.clearColor = new BABYLON.Color4(0.83, 0.83, 0.83, 1); // Equivalent to #D3D3D3
+            scene.clearColor = new BABYLON.Color4(0.83, 0.83, 0.83, 1); // Light grey background
 
             // Set up a camera (top-down view)
             const camera = new BABYLON.ArcRotateCamera(
@@ -28,7 +40,7 @@ const CoopRoom = () => {
                 -Math.PI / 2 - 3.14,
                 Math.PI / 2.5 - 0.2 - 10,
                 130,
-                new BABYLON.Vector3(-10, -10, 10),
+                new BABYLON.Vector3(-30, -10, -15),
                 scene
             );
             camera.attachControl(canvas, true);
@@ -37,30 +49,35 @@ const CoopRoom = () => {
             const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
             light.intensity = 1;
 
+            // Load the room model and identify each room mesh
             BABYLON.SceneLoader.ImportMesh("", "/assets/", "room.glb", scene, function (meshes) {
-                const model = meshes[0];
-                model.position = new BABYLON.Vector3(20, 0, 25);
+                const roomMeshMap = {
+                    1: meshes[1],
+                    2: meshes[2],
+                    3: meshes[3],
+                    4: meshes[4],
+                    5: meshes[5]
+
+                };
+                setRoomMeshes(roomMeshMap);
+                updateMeshColors(roomMeshMap);
             });
 
-            // scene.onPointerDown = () => {
-            //     const hit = scene.pick(scene.pointerX, scene.pointerY);
-
-            //     if (hit.pickedMesh) {
-            //         if (lastPickedMesh && lastPickedMesh !== hit.pickedMesh) {
-            //             lastPickedMesh.material.albedoColor = BABYLON.Color3.White();
-            //         }
-
-            //         hit.pickedMesh.material.albedoColor = BABYLON.Color3.Red();
-            //         lastPickedMesh = hit.pickedMesh;
-            //     } else {
-            //         if (lastPickedMesh) {
-            //             lastPickedMesh.material.albedoColor = BABYLON.Color3.White();
-            //             lastPickedMesh = null;
-            //         }
-            //     }
-            // };
-
             return scene;
+        };
+
+        const updateMeshColors = (roomMeshMap) => {
+            if(availableSpaces.length > 0)
+                Object.values(roomMeshMap).forEach(mesh => {
+                    mesh.material.albedoColor = BABYLON.Color3.Red();
+                });
+
+            availableSpaces.forEach(space => {
+                const mesh = roomMeshMap[space.room_number];
+                if (mesh) {
+                    mesh.material.albedoColor = BABYLON.Color3.Green();
+                }
+            });
         };
 
         const scene = createScene();
@@ -78,21 +95,32 @@ const CoopRoom = () => {
             engine.dispose();
             window.removeEventListener("resize", () => engine.resize());
         };
-    }, []);
+    }, [availableSpaces]); // Re-render Babylon scene when available spaces change
 
+    // Handle user input changes
     const handleSearchChange = (e) => {
         const { name, value } = e.target;
         setSearchParams({ ...searchParams, [name]: value });
     };
 
-    const availableSpaces = [
-        { name: "Hollywood (MAX 4)", seats: 4, times: ["7:00 am", "7:30 am", "8:00 am"] },
-        { name: "Finn (MAX 2)", seats: 2, times: ["7:00 am", "7:30 am", "8:00 am"] },
-        { name: "Kenobi (MAX 2)", seats: 2, times: ["7:00 am", "7:30 am", "8:00 am"] },
-        { name: "Rey (MAX 2)", seats: 2, times: ["7:00 am", "7:30 am", "8:00 am"] },
-        { name: "Kylo Ren (MAX 3)", seats: 3, times: ["7:00 am", "7:30 am", "8:00 am"] },
-        { name: "Jar Jar (MAX 3)", seats: 3, times: ["7:00 am", "7:30 am", "8:00 am"] }
-    ];
+    // Handle room reservation
+    const handleReserveRoom = async (room_number) => {
+        console.log(room_number);
+        try {
+            const reservationData = {
+                room_number: room_number,
+                reserver: "User123", // Replace with actual username from logged-in user
+                time_start: searchParams.startTime,
+                time_end: searchParams.endTime,
+                day: searchParams.date
+            };
+            await axios.post(`${API_BASE_URL}/reservations/`, reservationData);
+            alert(`Room ${room_number} has been reserved successfully!`);
+        } catch (error) {
+            console.error("Error reserving room:", error);
+            alert("Failed to reserve the room.");
+        }
+    };
 
     return (
         <>
@@ -115,19 +143,17 @@ const CoopRoom = () => {
                         Seats:
                         <input type="number" name="seats" value={searchParams.seats} onChange={handleSearchChange} style={{ marginLeft: "10px" }} />
                     </label>
+                    <button onClick={fetchAvailableSpaces}>Check Availability</button>
                 </div>
             </div>
             <div style={{ display: "flex", height: "85vh" }}>
-
                 <div style={{ width: "20%", padding: "20px", backgroundColor: "#f5f5f5", overflowY: "auto" }}>
                     <h3>Available Spaces</h3>
                     {availableSpaces.map((space, index) => (
                         <div key={index} style={{ marginBottom: "10px" }}>
-                            <h4>{space.name}</h4>
+                            <h4>{space.room_number}</h4>
                             <p>Seats: {space.seats}</p>
-                            {space.times.map((time, i) => (
-                                <button key={i} style={{ marginRight: "5px" }}>{time}</button>
-                            ))}
+                            <button onClick={() => handleReserveRoom(space.room_number)}>Reserve</button>
                         </div>
                     ))}
                 </div>
