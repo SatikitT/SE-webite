@@ -1,15 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as BABYLON from "@babylonjs/core";
+import UsePreventZoom from './UsePreventZoom'
 import "@babylonjs/loaders/glTF";
 
 const Map = () => {
     const canvasRef = useRef(null);
     const [hoverInfo, setHoverInfo] = useState({ name: "", x: 0, y: 0 });
 
+    UsePreventZoom(false, false);
+
     useEffect(() => {
         const canvas = canvasRef.current;
         const engine = new BABYLON.Engine(canvas, true); // Create BabylonJS engine
         let previousBuilding = null;
+
+        document.body.style.overflow = "hidden";
 
         const createScene = () => {
             const scene = new BABYLON.Scene(engine);
@@ -78,14 +83,13 @@ const Map = () => {
             engine.dispose();
             window.removeEventListener("resize", () => engine.resize());
         };
+
     }, []);
 
     return (
         <>
-            <div style={{ height: "7.4vh" }}></div>
-
             <div style={{ display: "flex", justifyContent: "center" }}>
-                <canvas ref={canvasRef} id="renderCanvas" style={{ width: "100%", height: "93vh" }}></canvas>
+                <canvas ref={canvasRef} id="renderCanvas" style={{ width: "100%", height: "92.5vh", marginTop: "7.5vh" }}></canvas>
 
                 {hoverInfo.name && (
                     <div
