@@ -9,11 +9,10 @@ html {
     z-index: 1000;
 }
 
-
-/* .main-nav-container {
+.main-nav-container {
     width: 100%;
     border-bottom: none;
-} */
+}
 
 .header-gradient {
     position: relative; 

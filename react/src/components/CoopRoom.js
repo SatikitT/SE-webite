@@ -5,7 +5,7 @@ import { API_BASE_URL } from '../api';
 import axios from "axios";  // Import axios to communicate with the backend
 
 const CoopRoom = ({ username }) => {
-    const canvasRef = useRef(null); // Reference to the canvas
+    const canvasRef = useRef(null);
     const [searchParams, setSearchParams] = useState({
         date: "",
         startTime: "",

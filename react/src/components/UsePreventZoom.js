@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 
-function UsePreventZoom(scrollCheck = true, keyboardCheck = true) {
+function UsePreventZoom(working = true, scrollCheck = true, keyboardCheck = true) {
     useEffect(() => {
+      if(!working) return;
+
       const handleKeydown = (e) => {
         if (
           keyboardCheck &&
@@ -30,7 +32,7 @@ function UsePreventZoom(scrollCheck = true, keyboardCheck = true) {
         document.removeEventListener("keydown", handleKeydown);
         document.removeEventListener("wheel", handleWheel);
       };
-    }, [scrollCheck, keyboardCheck]);
+    }, [working, scrollCheck, keyboardCheck]);
   }
 
 export default UsePreventZoom

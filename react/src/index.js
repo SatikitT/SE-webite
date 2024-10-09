@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import './components/Forum.css'
 import App from './App';
 import { EventType } from "@azure/msal-browser";
 import { msalInstance } from './components/AuthConfig';

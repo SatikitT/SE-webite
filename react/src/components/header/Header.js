@@ -53,6 +53,12 @@ function Header() {
                 header.style.top = '0';
             }
 
+            if(currentScrollTop != 0) {
+                container.style.background = 'white';
+            } else {
+                container.style.background = 'linear-gradient(to bottom, white 15%, transparent)';
+            }
+
             lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
         };
 

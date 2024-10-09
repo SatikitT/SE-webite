@@ -1,0 +1,51 @@
+.forum-container {
+    margin: 0 100px;
+    display: flex;
+}
+
+.content {
+    margin: auto;
+    padding: 20px;
+    width: calc(100% - 270px);
+}
+
+header {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.questions {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.question {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.question h3 {
+    font-size: 18px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.question h3 a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.question p {
+    color: #555;
+}
+

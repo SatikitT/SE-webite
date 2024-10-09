@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE_URL } from '../api';
+import DOMPurify from 'dompurify';
 
 const Post = () => {
-  const { forumId, postId } = useParams(); // Get forumId and postId from the URL
+  const { forumId, postId } = useParams();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
@@ -14,11 +15,9 @@ const Post = () => {
   useEffect(() => {
     const fetchPostAndComments = async () => {
       try {
-
         const postResponse = await axios.get(`${API_BASE_URL}/forums/${forumId}/posts/`);
         const postData = postResponse.data.find(p => p.id === parseInt(postId));
         setPost(postData);
-
 
         const commentsResponse = await axios.get(`${API_BASE_URL}/forums/${forumId}/posts/${postId}/comments/`);
         setComments(commentsResponse.data);
@@ -39,7 +38,6 @@ const Post = () => {
         content: newComment,
       });
 
-      // Update comments list with the new comment
       setComments([...comments, response.data]);
       setNewComment('');
     } catch (error) {
@@ -55,10 +53,13 @@ const Post = () => {
     return <div>Post not found</div>;
   }
 
+  const sanitizedContent = DOMPurify.sanitize(post.content);
+
   return (
     <>
       <h1>{post.title}</h1>
-      <p>{post.content}</p>
+
+      <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
       
       <div>
         <h2>Comments</h2>

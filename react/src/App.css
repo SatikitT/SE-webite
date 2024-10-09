@@ -43,15 +43,6 @@
   align-items: center;
 }
 
-.post-box {
-  border: 1px solid #ccc;
-  padding: 16px;
-  margin: 8px;
-  width: 80%;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-}
-
 .tag {
   display: inline-block;
   padding: 4px 8px;
@@ -96,3 +87,4 @@ input, textarea {
   display: flex;
   align-items: center;
 }
+
