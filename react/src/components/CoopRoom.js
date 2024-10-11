@@ -125,35 +125,39 @@ const CoopRoom = ({ username }) => {
     return (
         <>
             <div style={{ height: "7.5vh" }}></div>
-            <div style={{ display: "flex", justifyContent: "center", height: "7.5vh", width: "80%", display: "flex", flexWrap: "wrap", gap: "20px"}}>
+            <div style={{ display: "flex", justifyContent: "center", height: "7.5vh", width: "80%", display: "flex", flexWrap: "wrap", gap: "20px" }}>
                 <label style={{ display: "flex", alignItems: "center" }}>
                     Day:
                     <input type="date" name="date" value={searchParams.date} onChange={handleSearchChange} style={{ marginLeft: "10px" }} />
                 </label>
                 <label style={{ display: "flex", alignItems: "center", width: "200px" }}>
                     Start&nbsp;time:
-                    <input type="time" name="startTime" value={searchParams.startTime} onChange={handleSearchChange} style={{ marginLeft: "10px" }} />
+                    <input type="time" name="startTime" value={searchParams.startTime} onChange={handleSearchChange} style={{ marginLeft: "10px" }} step={"1800"} />
                 </label>
                 <label style={{ display: "flex", alignItems: "center" }}>
                     End&nbsp;time:
-                    <input type="time" name="endTime" value={searchParams.endTime} onChange={handleSearchChange} style={{ marginLeft: "10px" }} />
+                    <input type="time" name="endTime" value={searchParams.endTime} onChange={handleSearchChange} style={{ marginLeft: "10px" }} step={1800} />
                 </label>
                 <label style={{ display: "flex", alignItems: "center" }}>
                     Seats:
                     <input type="number" name="seats" value={searchParams.seats} onChange={handleSearchChange} style={{ marginLeft: "10px" }} />
                 </label>
-                <button onClick={fetchAvailableSpaces} style={{ marginTop: "auto", marginBottom: "auto", height: "20px" }}>Check Availability</button>
+                <button onClick={fetchAvailableSpaces} style={{ marginTop: "auto", marginBottom: "auto", width: "150px" }}>Check Availability</button>
             </div>
             <div style={{ display: "flex", height: "85vh" }}>
                 <div style={{ width: "20%", paddingLeft: "20px", backgroundColor: "#f5f5f5", overflowY: "auto" }}>
                     <h3>Available Spaces</h3>
-                    {availableSpaces.map((space, index) => (
-                        <div key={index} style={{ marginBottom: "10px" }}>
-                            <h4>{space.room_number}</h4>
-                            <p>Seats: {space.seats}</p>
-                            <button onClick={() => handleReserveRoom(space.room_number)}>Reserve</button>
-                        </div>
-                    ))}
+                    {availableSpaces.length === 0 ? (
+                        <p>Please fill the form above to see available rooms</p>
+                    ) : (
+                        availableSpaces.slice().reverse().map((space, index) => (
+                            <div key={index} className="question" style={{ marginBottom: "10px", width: "80%", paddingTop: "0px" }}>
+                                <p>Room {space.room_number}</p>
+                                {/* <p>Seats: {space.seats}</p> */}
+                                <button onClick={() => handleReserveRoom(space.room_number)}>Reserve</button>
+                            </div>
+                        ))
+                    )}
                 </div>
 
                 <div style={{ width: "80%", justifyContent: "center", display: "flex" }}>

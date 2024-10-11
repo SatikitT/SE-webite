@@ -36,7 +36,7 @@ const Forum = () => {
         <div className='content'>
           <header>
             <h1>All Posts</h1>
-            <button style={{marginLeft: "auto", borderRadius: "20px", height: "40px", border: "0px", width: "100px"}}>
+            <button style={{marginLeft: "auto", borderRadius: "20px", height: "40px", border: "0px", width: "100px", marginTop: "auto"}}>
               <Link to="/add-post">Add Post</Link>
             </button>
           </header>

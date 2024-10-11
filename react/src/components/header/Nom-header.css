@@ -7,6 +7,7 @@ html {
     width: 100%;
     transition: 0.3s;
     z-index: 1000;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
 }
 
 .main-nav-container {
