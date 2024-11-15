@@ -53,7 +53,7 @@
 }
 
 
-button {
+.globalbutton {
   background-color: rgb(225, 225, 225);
   border-radius: 20px;
   height: 40px;
@@ -61,7 +61,7 @@ button {
   width: 100px;
 }
 
-button:hover {
+.globalbutton:hover {
   background-color: rgb(196, 196, 196);
 }
 

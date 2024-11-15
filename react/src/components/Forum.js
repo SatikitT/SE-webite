@@ -4,6 +4,7 @@ import axios from 'axios';
 import { API_BASE_URL } from '../api';
 import UsePreventZoom from './UsePreventZoom'
 import './Forum.css'
+import '../App.css'
 
 const Forum = () => {
   const [posts, setPosts] = useState([]);
@@ -36,7 +37,7 @@ const Forum = () => {
         <div className='content'>
           <header>
             <h1>All Posts</h1>
-            <button style={{marginLeft: "auto", borderRadius: "20px", height: "40px", border: "0px", width: "100px", marginTop: "auto"}}>
+            <button className="globalbutton" style={{marginLeft: "auto", borderRadius: "20px", height: "40px", border: "0px", width: "100px", marginTop: "auto"}}>
               <Link to="/add-post">Add Post</Link>
             </button>
           </header>

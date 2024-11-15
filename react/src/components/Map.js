@@ -129,7 +129,6 @@ const Map = () => {
             <div style={{ display: "flex", justifyContent: "center" }}>
                 <canvas ref={canvasRef} id="renderCanvas" style={{ width: "100%", height: "92.5vh", marginTop: "7.5vh" }}></canvas>
 
-                {/* Display the names of all clickable meshes at their positions */}
                 {hoverInfo.map((meshInfo, i) => (
                     <div
                         key={i}
@@ -141,7 +140,7 @@ const Map = () => {
                             color: "white",
                             padding: "5px",
                             borderRadius: "5px",
-                            pointerEvents: "none", // Ensure the panel does not block pointer events
+                            pointerEvents: "none", 
                             zIndex: 10
                         }}
                     >

@@ -1,4 +1,5 @@
 import './Nom-header.css';
+import '../../App.css'
 import logo from '../../assets/header/SE_logo.png';
 import Profile from '../../assets/header/profile.jpg';
 import React, { useEffect, useState } from 'react';
@@ -37,26 +38,10 @@ function Header() {
             const imageBottom = image?.getBoundingClientRect().bottom - 500 || 0;
             const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-            if (imageBottom < 0) {
-                container.style.background = '#ebebeb';
-                container.style.borderBottom = '1px solid #d9d9d9';
-                container.style.transition = '0.3s';
-            } else {
-                container.style.background = 'linear-gradient(to bottom, white 15%, transparent)';
-                container.style.borderBottom = 'none';
-                container.style.transition = '0.3s';
-            }
-
             if (currentScrollTop > lastScrollTop) {
                 header.style.top = '-80px';
             } else {
                 header.style.top = '0';
-            }
-
-            if(currentScrollTop != 0) {
-                container.style.background = 'white';
-            } else {
-                container.style.background = 'linear-gradient(to bottom, white 15%, transparent)';
             }
 
             lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
@@ -99,7 +84,7 @@ function Header() {
 
                     <div className='profile-container'>
                         <UnauthenticatedTemplate>
-                            <button onClick={handleRedirect} disabled={isLoggingIn || inProgress !== InteractionStatus.None}>
+                            <button className='globalbutton' onClick={handleRedirect} disabled={isLoggingIn || inProgress !== InteractionStatus.None}>
                                 {isLoggingIn ? 'Signing Up...' : 'Sign Up'}
                             </button>
                         </UnauthenticatedTemplate>

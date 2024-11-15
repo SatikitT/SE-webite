@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './components/Home';
+import Home from './pages/home/Home';
 import About from './components/About';
 import Forum from './components/Forum';
 import Post from './components/Post';
 import AddPost from './components/AddPost';
-import CoopRoom from './components/CoopRoom';
+import CoopRoom from './pages/room/Room';
 import Map from './components/Map';
 import Header from './components/header/Header';
 import { MsalProvider } from "@azure/msal-react";

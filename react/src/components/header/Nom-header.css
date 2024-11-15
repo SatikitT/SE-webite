@@ -26,8 +26,7 @@ html {
 .container {
     display: flex;
     height: 4em;
-    background: linear-gradient(to bottom, white 15%, transparent);
-    backdrop-filter: blur(2px);
+    background: white;
 }
 
 .SElogo-container {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as BABYLON from "@babylonjs/core";
 import "@babylonjs/loaders/glTF";
-import { API_BASE_URL } from '../api';
-import axios from "axios";  // Import axios to communicate with the backend
+import { API_BASE_URL } from '../../api';
+import axios from "axios";
 
 const CoopRoom = ({ username }) => {
     const canvasRef = useRef(null);
@@ -31,6 +31,9 @@ const CoopRoom = ({ username }) => {
         const engine = new BABYLON.Engine(canvas, true); // Create BabylonJS engine
 
         const createScene = () => {
+
+            let lastPickedMesh = null;
+            
             const scene = new BABYLON.Scene(engine);
             scene.clearColor = new BABYLON.Color4(0.83, 0.83, 0.83, 1); // Light grey background
 
@@ -62,6 +65,26 @@ const CoopRoom = ({ username }) => {
                 setRoomMeshes(roomMeshMap);
                 updateMeshColors(roomMeshMap);
             });
+            
+            scene.onPointerDown = () => {
+                const hit = scene.pick(scene.pointerX, scene.pointerY);
+
+                if (hit.pickedMesh) {
+                    
+                    if (lastPickedMesh && lastPickedMesh !== hit.pickedMesh) {
+                        lastPickedMesh.material.albedoColor = BABYLON.Color3.White();
+                    }
+
+                    hit.pickedMesh.material.albedoColor = BABYLON.Color3.Red();
+                    lastPickedMesh = hit.pickedMesh;
+                } else {
+                    if (lastPickedMesh) {
+                        lastPickedMesh.material.albedoColor = BABYLON.Color3.White();
+                        lastPickedMesh = null;
+                    }
+                }
+                console.log(lastPickedMesh);
+            };
 
             return scene;
         };
@@ -142,7 +165,7 @@ const CoopRoom = ({ username }) => {
                     Seats:
                     <input type="number" name="seats" value={searchParams.seats} onChange={handleSearchChange} style={{ marginLeft: "10px" }} />
                 </label>
-                <button onClick={fetchAvailableSpaces} style={{ marginTop: "auto", marginBottom: "auto", width: "150px" }}>Check Availability</button>
+                <button className="globalbutton" onClick={fetchAvailableSpaces} style={{ marginTop: "auto", marginBottom: "auto", width: "150px" }}>Check Availability</button>
             </div>
             <div style={{ display: "flex", height: "85vh" }}>
                 <div style={{ width: "20%", paddingLeft: "20px", backgroundColor: "#f5f5f5", overflowY: "auto" }}>
