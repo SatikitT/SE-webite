@@ -74,8 +74,8 @@ const Calendar = ({ searchParams, onDateChange }) => {
         <div className="calendar-container">
             <div className="calendar-header">
                 <button onClick={() => changeMonth(-1)}>{"<"}</button>
-                <h3 style={{position: 'relative', marginRight: '-15%'}}>{`${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`}</h3>
-                <button onClick={() => returnToToday()} style={{position: 'relative', marginRight: '-30%'}}>Today</button>
+                <h3>{`${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`}</h3>
+                <button onClick={() => returnToToday()} style={{position: 'fixed', right: "150px"}}>Today</button>
                 <button onClick={() => changeMonth(1)}>{">"}</button>
             </div>
             <div className="calendar-weekdays">
