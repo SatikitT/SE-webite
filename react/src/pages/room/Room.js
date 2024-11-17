@@ -103,7 +103,7 @@ const CoopRoom = ({ username }) => {
             scene.onPointerDown = () => {
                 const hit = scene.pick(scene.pointerX, scene.pointerY);
 
-                if (hit.pickedMesh) {
+                if (hit.pickedMesh && hit.pickedMesh.name.includes("room")) {
                     if (lastPickedMesh && lastPickedMesh !== hit.pickedMesh) {
                         lastPickedMesh.material.albedoColor = BABYLON.Color3.White();
                     }
