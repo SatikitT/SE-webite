@@ -3,6 +3,7 @@ import axios from 'axios';
 import EditableMedia from '../../components/editableimage/EditableImage';
 import { API_BASE_URL } from '../../api';
 import './admin.css';
+import Footer from '../../components/footer/Footer';
 
 const Admin = () => {
     const [currentSection, setCurrentSection] = useState('statistics');
@@ -164,9 +165,9 @@ const Admin = () => {
         try {
             const updatedItem = { title: currentItem.title, detail: currentItem.detail, type: currentSection };
             await axios.put(`${API_BASE_URL}/items/${currentItem.id}/`, updatedItem);
-    
+
             await handleImageSubmit(currentItem.title);
-    
+
             setItems((prevItems) =>
                 prevItems.map((item) => (item.id === currentItem.id ? { ...item, ...updatedItem } : item))
             );
@@ -177,7 +178,7 @@ const Admin = () => {
             alert('Failed to update item.');
         }
     };
-    
+
 
 
     const handleMediaSubmit = async (e) => {
@@ -208,298 +209,301 @@ const Admin = () => {
     };
 
     return (
-        <div style={{ display: 'flex' }}>
-            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"></link>
-            <div className="admin-wrapper">
-                <div className="sidebar">
-                    <h2 style={{color:'white'}}>Admin Panel</h2>
-                    <div className="menu-item">
-                        <a href="#!" onClick={() => handleSectionSwitch("statistics")}>
-                            <i className="far fa-chart-bar"></i> Satistics
-                        </a>
-                    </div>
-
-                    <div className={`menu-item has-submenu ${homeMenuOpen ? "open" : ""}`}>
-                        <a href="#!" onClick={toggleHomeMenu}>
-                            <i className="fas fa-home"></i> Home Page
-                        </a>
-                        <div className={`submenu ${homeMenuOpen ? "open" : ""}`}>
-                            <a href="#!" onClick={() => handleSectionSwitch("welcome-footage")}>
-                                Welcome Footage
+        <>
+            <div style={{ display: 'flex' }}>
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"></link>
+                <div className="admin-wrapper">
+                    <div className="sidebar">
+                        <h2 style={{ color: 'white' }}>Admin Panel</h2>
+                        <div className="menu-item">
+                            <a href="#!" onClick={() => handleSectionSwitch("statistics")}>
+                                <i className="far fa-chart-bar"></i> Satistics
                             </a>
-                            <a href="#!" onClick={() => handleSectionSwitch("award")}>Award</a>
-                            <a href="#!" onClick={() => handleSectionSwitch("news")}>News</a>
                         </div>
-                    </div>
 
-                    <div className="menu-item">
-                        <a href="#!" onClick={() => handleSectionSwitch("about-page")}>
-                            <i className="fas fa-info-circle"></i> About Page
-                        </a>
-                    </div>
-                    <div className="menu-item">
-                        <a href="#!" onClick={() => handleSectionSwitch("room-management")}>
-                            <i className="fas fa-cogs"></i> Room Management
-                        </a>
-                    </div>
-                </div>
-
-                <div className="main-content">
-
-                    {currentSection === 'statistics' && (
-                        <div className="content-section">
-                            <h1>Statistics</h1>
-
-                        </div>
-                    )}
-
-                    {currentSection === 'welcome-footage' && (
-                        <div id="welcome-footage" className="content-section">
-                            <h1>Welcome Footage</h1>
-                            <EditableMedia mediaTag="mainpage" mediaStyle={{ width: '50%' }} />
-                            <form onSubmit={handleMediaSubmit} style={{ marginTop: '20px' }}>
-                                <label>
-                                    Media URL:
-                                    <input
-                                        type="text"
-                                        value={mediaUrl}
-                                        onChange={(e) => setMediaUrl(e.target.value)}
-                                        placeholder="Enter media URL"
-                                        style={{ marginLeft: '10px', marginRight: '10px' }}
-                                    />
-                                </label>
-                                <label>
-                                    Or Upload File:
-                                    <input
-                                        type="file"
-                                        accept="image/*,video/*"
-                                        onChange={(e) => setSelectedFile(e.target.files[0])}
-                                        style={{ marginLeft: '10px' }}
-                                    />
-                                </label>
-                                <button type="submit" style={{ marginLeft: '10px' }}>
-                                    Update Media
-                                </button>
-                            </form>
-                        </div>
-                    )}
-
-                    {currentSection === "award" && (
-                        <div id="award" className="content-section">
-                            <h1>Award</h1>
-                            <ul>
-                                {items.length > 0 ? (
-                                    items.map(award => {
-                                        return (
-                                            <li key={award.id}>
-                                                <span>{award.title}</span>
-                                                <div className="button-group">
-                                                    <button onClick={() => openEditModal(award)}>
-                                                        <i className="fas fa-pen"></i>
-                                                    </button>
-                                                    <button onClick={() => openRemoveModal(award.id)}>
-                                                        <i className="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </li>
-                                        );
-                                    })
-                                ) : (
-                                    <li>No awards.</li>
-                                )}
-                            </ul>
-
-                            <button onClick={openAddModal}>Add New Award</button>
-                        </div>
-                    )}
-
-                    {currentSection === "news" && (
-                        <div id="news" className="content-section">
-                            <h1>News</h1>
-                            <ul>
-                                {items.length > 0 ? (
-                                    items.map(news => {
-                                        return (
-                                            <li key={news.id}>
-                                                <span>{news.title}</span>
-                                                <div className="button-group">
-                                                    <button onClick={() => openEditModal(news)}>
-                                                        <i className="fas fa-pen"></i>
-                                                    </button>
-                                                    <button onClick={() => openRemoveModal(news.id)}>
-                                                        <i className="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </li>
-                                        );
-                                    })
-                                ) : (
-                                    <li>No news.</li>
-                                )}
-                            </ul>
-                            <button onClick={openAddModal}>Add New News</button>
-                        </div>
-                    )}
-
-                    {currentSection === "about-page" && (
-                        <div id="about-page" className="content-section">
-                            <h1>About Page</h1>
-                            <ul>
-                                <li>
-                                    <span>Employee 1</span>
-                                    <div className="button-group">
-                                        <button onClick={() => openEditModal("Employee 1")}>
-                                            <i className="fas fa-pen"></i>
-                                        </button>
-                                        <button onClick={() => openRemoveModal("Employee 1")}>
-                                            <i className="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    )}
-
-                    {currentSection === "room-management" && (
-                        <div id="room-management" className="content-section">
-                            <h1>Room Management</h1>
-                            <ul>
-                                {rooms.length > 0 ? (
-                                    rooms.map(room => {
-                                        const timeReserved = room.time.map(hour => `${hour}:00`).join(", ");
-                                        return (
-                                            <li key={room.id}>
-                                                <span>{`Room ${room.room_number} reserved on ${room.day} at ${timeReserved}`}</span>
-                                                <button onClick={() => removeRoom(room.id)}>
-                                                    <i className="fas fa-trash"></i>
-                                                </button>
-                                            </li>
-                                        );
-                                    })
-                                ) : (
-                                    <li>No rooms reserved.</li>
-                                )}
-                            </ul>
-                        </div>
-                    )}
-
-
-                    {isAddModalOpen && (
-                        <div className="modal open">
-                            <div className="modal-content">
-                                <h2>Add New Item</h2>
-                                <form onSubmit={handleAddItem}>
-                                    <div className="form-group">
-                                        <label>Title:</label>
-                                        <input
-                                            type="text"
-                                            value={newItem.title}
-                                            onChange={(e) => setNewItem({ ...newItem, title: e.target.value })}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Detail:</label>
-                                        <textarea
-                                            rows="4"
-                                            value={newItem.detail}
-                                            onChange={(e) => setNewItem({ ...newItem, detail: e.target.value })}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Image URL:</label>
-                                        <input
-                                            type="text"
-                                            value={newImage.imageUrl}
-                                            onChange={(e) => setNewImage({ ...newImage, imageUrl: e.target.value, file: null })}
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Upload Image:</label>
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={(e) => setNewImage({ ...newImage, file: e.target.files[0], imageUrl: '' })}
-                                        />
-                                    </div>
-
-                                    <div className="button-group">
-                                        <button type="submit">Add</button>
-                                        <button type="button" onClick={closeAddModal}>
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </form>
+                        <div className={`menu-item has-submenu ${homeMenuOpen ? "open" : ""}`}>
+                            <a href="#!" onClick={toggleHomeMenu}>
+                                <i className="fas fa-home"></i> Home Page
+                            </a>
+                            <div className={`submenu ${homeMenuOpen ? "open" : ""}`}>
+                                <a href="#!" onClick={() => handleSectionSwitch("welcome-footage")}>
+                                    Welcome Footage
+                                </a>
+                                <a href="#!" onClick={() => handleSectionSwitch("award")}>Award</a>
+                                <a href="#!" onClick={() => handleSectionSwitch("news")}>News</a>
                             </div>
                         </div>
-                    )}
 
-                    {modalType === "edit" && currentItem && (
-                        <div className="modal open">
-                            <div className="modal-content">
-                                <h2>Edit {currentItem.title}</h2>
-                                <form onSubmit={handleEditItem}>
-                                    <div className="form-group">
-                                        <label>Title:</label>
+                        <div className="menu-item">
+                            <a href="#!" onClick={() => handleSectionSwitch("about-page")}>
+                                <i className="fas fa-info-circle"></i> About Page
+                            </a>
+                        </div>
+                        <div className="menu-item">
+                            <a href="#!" onClick={() => handleSectionSwitch("room-management")}>
+                                <i className="fas fa-cogs"></i> Room Management
+                            </a>
+                        </div>
+                    </div>
+
+                    <div className="main-content">
+
+                        {currentSection === 'statistics' && (
+                            <div className="content-section">
+                                <h1>Statistics</h1>
+
+                            </div>
+                        )}
+
+                        {currentSection === 'welcome-footage' && (
+                            <div id="welcome-footage" className="content-section">
+                                <h1>Welcome Footage</h1>
+                                <EditableMedia mediaTag="mainpage" mediaStyle={{ width: '50%' }} />
+                                <form onSubmit={handleMediaSubmit} style={{ marginTop: '20px' }}>
+                                    <label>
+                                        Media URL:
                                         <input
                                             type="text"
-                                            value={currentItem.title}
-                                            onChange={(e) => setCurrentItem({ ...currentItem, title: e.target.value })}
-                                            required
+                                            value={mediaUrl}
+                                            onChange={(e) => setMediaUrl(e.target.value)}
+                                            placeholder="Enter media URL"
+                                            style={{ marginLeft: '10px', marginRight: '10px' }}
                                         />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Detail:</label>
-                                        <textarea
-                                            rows="4"
-                                            value={currentItem.detail}
-                                            onChange={(e) => setCurrentItem({ ...currentItem, detail: e.target.value })}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Image URL:</label>
-                                        <input
-                                            type="text"
-                                            value={newImage.imageUrl}
-                                            onChange={(e) => setNewImage({ ...newImage, imageUrl: e.target.value, file: null })}
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Upload Image:</label>
+                                    </label>
+                                    <label>
+                                        Or Upload File:
                                         <input
                                             type="file"
-                                            accept="image/*"
-                                            onChange={(e) => setNewImage({ ...newImage, file: e.target.files[0], imageUrl: '' })}
+                                            accept="image/*,video/*"
+                                            onChange={(e) => setSelectedFile(e.target.files[0])}
+                                            style={{ marginLeft: '10px' }}
                                         />
-                                    </div>
-
-                                    <div className="button-group">
-                                        <button type="submit">Save</button>
-                                        <button type="button" onClick={closeModal}>
-                                            Cancel
-                                        </button>
-                                    </div>
+                                    </label>
+                                    <button type="submit" style={{ marginLeft: '10px' }}>
+                                        Update Media
+                                    </button>
                                 </form>
                             </div>
-                        </div>
-                    )}
+                        )}
 
-                    {modalType === "remove" && (
-                        <div className="modal open">
-                            <div className="modal-content">
-                                <h2>Remove {currentItem}?</h2>
-                                <div class="button-group" style={{ justifyContent: 'center' }}>
-                                    <button onClick={() => removeItem(currentItem)}>Yes</button>
-                                    <button onClick={closeModal}>No</button>
+                        {currentSection === "award" && (
+                            <div id="award" className="content-section">
+                                <h1>Award</h1>
+                                <ul>
+                                    {items.length > 0 ? (
+                                        items.map(award => {
+                                            return (
+                                                <li key={award.id}>
+                                                    <span>{award.title}</span>
+                                                    <div className="button-group">
+                                                        <button onClick={() => openEditModal(award)}>
+                                                            <i className="fas fa-pen"></i>
+                                                        </button>
+                                                        <button onClick={() => openRemoveModal(award.id)}>
+                                                            <i className="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            );
+                                        })
+                                    ) : (
+                                        <li>No awards.</li>
+                                    )}
+                                </ul>
+
+                                <button onClick={openAddModal}>Add New Award</button>
+                            </div>
+                        )}
+
+                        {currentSection === "news" && (
+                            <div id="news" className="content-section">
+                                <h1>News</h1>
+                                <ul>
+                                    {items.length > 0 ? (
+                                        items.map(news => {
+                                            return (
+                                                <li key={news.id}>
+                                                    <span>{news.title}</span>
+                                                    <div className="button-group">
+                                                        <button onClick={() => openEditModal(news)}>
+                                                            <i className="fas fa-pen"></i>
+                                                        </button>
+                                                        <button onClick={() => openRemoveModal(news.id)}>
+                                                            <i className="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            );
+                                        })
+                                    ) : (
+                                        <li>No news.</li>
+                                    )}
+                                </ul>
+                                <button onClick={openAddModal}>Add New News</button>
+                            </div>
+                        )}
+
+                        {currentSection === "about-page" && (
+                            <div id="about-page" className="content-section">
+                                <h1>About Page</h1>
+                                <ul>
+                                    <li>
+                                        <span>Employee 1</span>
+                                        <div className="button-group">
+                                            <button onClick={() => openEditModal("Employee 1")}>
+                                                <i className="fas fa-pen"></i>
+                                            </button>
+                                            <button onClick={() => openRemoveModal("Employee 1")}>
+                                                <i className="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        )}
+
+                        {currentSection === "room-management" && (
+                            <div id="room-management" className="content-section">
+                                <h1>Room Management</h1>
+                                <ul>
+                                    {rooms.length > 0 ? (
+                                        rooms.map(room => {
+                                            const timeReserved = room.time.map(hour => `${hour}:00`).join(", ");
+                                            return (
+                                                <li key={room.id}>
+                                                    <span>{`Room ${room.room_number} reserved on ${room.day} at ${timeReserved}`}</span>
+                                                    <button onClick={() => removeRoom(room.id)}>
+                                                        <i className="fas fa-trash"></i>
+                                                    </button>
+                                                </li>
+                                            );
+                                        })
+                                    ) : (
+                                        <li>No rooms reserved.</li>
+                                    )}
+                                </ul>
+                            </div>
+                        )}
+
+
+                        {isAddModalOpen && (
+                            <div className="modal open">
+                                <div className="modal-content">
+                                    <h2>Add New Item</h2>
+                                    <form onSubmit={handleAddItem}>
+                                        <div className="form-group">
+                                            <label>Title:</label>
+                                            <input
+                                                type="text"
+                                                value={newItem.title}
+                                                onChange={(e) => setNewItem({ ...newItem, title: e.target.value })}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Detail:</label>
+                                            <textarea
+                                                rows="4"
+                                                value={newItem.detail}
+                                                onChange={(e) => setNewItem({ ...newItem, detail: e.target.value })}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Image URL:</label>
+                                            <input
+                                                type="text"
+                                                value={newImage.imageUrl}
+                                                onChange={(e) => setNewImage({ ...newImage, imageUrl: e.target.value, file: null })}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Upload Image:</label>
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => setNewImage({ ...newImage, file: e.target.files[0], imageUrl: '' })}
+                                            />
+                                        </div>
+
+                                        <div className="button-group">
+                                            <button type="submit">Add</button>
+                                            <button type="button" onClick={closeAddModal}>
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                        </div>
-                    )}
+                        )}
+
+                        {modalType === "edit" && currentItem && (
+                            <div className="modal open">
+                                <div className="modal-content">
+                                    <h2>Edit {currentItem.title}</h2>
+                                    <form onSubmit={handleEditItem}>
+                                        <div className="form-group">
+                                            <label>Title:</label>
+                                            <input
+                                                type="text"
+                                                value={currentItem.title}
+                                                onChange={(e) => setCurrentItem({ ...currentItem, title: e.target.value })}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Detail:</label>
+                                            <textarea
+                                                rows="4"
+                                                value={currentItem.detail}
+                                                onChange={(e) => setCurrentItem({ ...currentItem, detail: e.target.value })}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Image URL:</label>
+                                            <input
+                                                type="text"
+                                                value={newImage.imageUrl}
+                                                onChange={(e) => setNewImage({ ...newImage, imageUrl: e.target.value, file: null })}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Upload Image:</label>
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => setNewImage({ ...newImage, file: e.target.files[0], imageUrl: '' })}
+                                            />
+                                        </div>
+
+                                        <div className="button-group">
+                                            <button type="submit">Save</button>
+                                            <button type="button" onClick={closeModal}>
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        )}
+
+                        {modalType === "remove" && (
+                            <div className="modal open">
+                                <div className="modal-content">
+                                    <h2>Remove {currentItem}?</h2>
+                                    <div class="button-group" style={{ justifyContent: 'center' }}>
+                                        <button onClick={() => removeItem(currentItem)}>Yes</button>
+                                        <button onClick={closeModal}>No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+            <Footer />
+        </>
     );
 };
 

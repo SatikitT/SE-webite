@@ -16,6 +16,7 @@ import Software from './pages/program/SubProgram/Software/Software';
 import Admission from './pages/admission/Admission';
 import NewsDetail from './pages/home/img-slider/New/NewDetail';
 import QuestionDetail from './pages/forum2/PostDetail';
+import ScrollToTop from './components/ScrollToTop';
 import { MsalProvider } from "@azure/msal-react";
 import './App.css';
 
@@ -63,6 +64,7 @@ const App = ({ instance }) => {
   return (
     <MsalProvider instance={instance}>
       <Router>
+        <ScrollToTop />
         <Header isAdmin={isAdmin} />
         <Routes>
           <Route path="/" element={<Home isAdmin={isAdmin} />} />

@@ -1,3 +1,4 @@
+/* General Styles */
 .pageBackground {
     background: url('bg-page.jpg') no-repeat center center fixed;
     background-size: cover;
@@ -17,7 +18,7 @@
 }
 
 .titleFirst {
-    font-size: 4vh;
+    font-size: 5vh;
     font-weight: bold;
     color: #333;
     text-align: left;
@@ -27,7 +28,7 @@
 
 /* Title Section */
 .title {
-    font-size: 4vh;
+    font-size: 5vh;
     font-weight: bold;
     color: #333;
     text-align: left;
@@ -35,8 +36,8 @@
 }
 
 /* Description Section */
-.description {
-    font-size: 2vh;
+.description p {
+    font-size: 2.5vh;
     color: #555;
     line-height: 1.8;
     text-align: justify;
@@ -45,7 +46,7 @@
 }
 
 .titleRight {
-    font-size: 4vh;
+    font-size: 5vh;
     font-weight: bold;
     color: #333;
     text-align: left;
@@ -53,8 +54,8 @@
     padding-left: 65%;
 }
 
-.descriptionLeft {
-    font-size: 2vh;
+.descriptionLeft p{
+    font-size: 2.5vh;
     color: #555;
     line-height: 1.8;
     text-align: justify;
@@ -66,6 +67,7 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 40px;
+    
 }
 
 .imgContainerRight {
@@ -73,6 +75,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 40px;
+    
 }
 
 .imgContainerRight img {
@@ -91,35 +94,36 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.fadeLeft {
+/* Animation Classes */
+.fadeLeft,
+.fadeRight,
+.fadeUp,
+.fadeDown {
     opacity: 0;
-    transform: translateX(-50%);
-    transition: opacity 1s, transform 1s;
+    transform: translateX(0) translateY(0);
+    transition: all 1s ease-in-out;
+}
+
+.fadeLeft {
+    transform: translateX(-50px);
 }
 
 .fadeRight {
-    opacity: 0;
-    transform: translateX(50%);
-    transition: opacity 1s, transform 1s;
+    transform: translateX(50px);
 }
 
 .fadeUp {
-    opacity: 0;
-    transform: translateY(50%);
-    transition: opacity 1s, transform 1s;
+    transform: translateY(50px);
 }
 
 .fadeDown {
-    opacity: 0;
-    transform: translateY(-50%);
-    transition: opacity 1s, transform 1s;
+    transform: translateY(-50px);
 }
 
 .visible {
     opacity: 1;
     transform: translateX(0) translateY(0);
 }
-
 
 .titleStaff {
     text-align: center;
@@ -154,6 +158,7 @@
     border-radius: 20px;
     margin: 20px;
     cursor: pointer;
+    object-fit: cover;
 }
 
 /* Lecturer Section */
@@ -183,17 +188,23 @@
     height: 40vh;
     border-radius: 20px;
     cursor: pointer;
+    object-fit: cover;
 }
 
 /* Staff Section */
 .staffSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 40px;
 }
 
 .staffMembers {
-    display: flex;
+    display: grid;
     justify-content: center;
     gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .staffMembers .teamMember {
@@ -205,6 +216,7 @@
     height: 40vh;
     border-radius: 20px;
     cursor: pointer;
+    object-fit: cover;
 }
 
 /* Common Team Member Styles */

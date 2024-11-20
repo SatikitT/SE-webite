@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE_URL } from '../../api';
 import './Forum.css';
+import Footer from '../../components/footer/Footer';
 
 const Forum = ({ username }) => {
     const [questions, setQuestions] = useState([]);
@@ -17,11 +18,11 @@ const Forum = ({ username }) => {
         fetchPost();
     }, []);
 
-    const fetchPost = ()=> {
+    const fetchPost = () => {
         fetch(`${API_BASE_URL}/forums/1/posts/`)
-        .then((res) => res.json())
-        .then((data) => setQuestions(data))
-        .catch((err) => console.error(err));
+            .then((res) => res.json())
+            .then((data) => setQuestions(data))
+            .catch((err) => console.error(err));
     };
 
     const handlePost = async () => {
@@ -79,81 +80,85 @@ const Forum = ({ username }) => {
     };
 
     return (
-        <div className="forum-main">
-            <div className="forum-container">
-                <main>
-                    <div className="post-container">
-                        <input
-                            type="text"
-                            placeholder={
-                                titleError
-                                    ? '! Title is required'
-                                    : "What's on your mind?"
-                            }
-                            value={title}
-                            onChange={(e) => {
-                                setTitle(e.target.value);
-                                if (e.target.value.trim()) setTitleError(false);
-                            }}
-                            style={{
-                                borderColor: titleError ? '#ff6961' : '#d1d1d1',
-                                color: titleError ? '#ff6961' : 'inherit',
-                            }}
-                        />
+        <>
+            <div className="forum-main">
+                <div className="forum-container">
+                    <main>
+                        <div className="post-container">
+                            <input
+                                type="text"
+                                placeholder={
+                                    titleError
+                                        ? '! Title is required'
+                                        : "What's on your mind?"
+                                }
+                                value={title}
+                                onChange={(e) => {
+                                    setTitle(e.target.value);
+                                    if (e.target.value.trim()) setTitleError(false);
+                                }}
+                                style={{
+                                    borderColor: titleError ? '#ff6961' : '#d1d1d1',
+                                    color: titleError ? '#ff6961' : 'inherit',
+                                }}
+                            />
 
-                        <textarea
-                            placeholder="Details... (Optional)"
-                            value={details}
-                            onChange={(e) => setDetails(e.target.value)}
-                        ></textarea>
+                            <textarea
+                                placeholder="Details... (Optional)"
+                                value={details}
+                                onChange={(e) => setDetails(e.target.value)}
+                            ></textarea>
 
-                        {mediaError && (
-                            <p className="error-text">Only image files are allowed!</p>
-                        )}
+                            {mediaError && (
+                                <p className="error-text">Only image files are allowed!</p>
+                            )}
 
-                        {media && (
-                            <div className="media-preview">
-                                <img
-                                    src={URL.createObjectURL(media)}
-                                    alt="Preview"
-                                    style={{ maxWidth: '100%' }}
-                                />
+                            {media && (
+                                <div className="media-preview">
+                                    <img
+                                        src={URL.createObjectURL(media)}
+                                        alt="Preview"
+                                        style={{ maxWidth: '100%' }}
+                                    />
+                                </div>
+                            )}
+
+                            <div className="actions">
+                                <label>
+                                    + Add Photo
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        style={{ display: 'none' }}
+                                        onChange={handleMediaUpload}
+                                    />
+                                </label>
+                                <button className="post-button" onClick={handlePost}>
+                                    Post
+                                </button>
                             </div>
-                        )}
-
-                        <div className="actions">
-                            <label>
-                                + Add Photo
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    style={{ display: 'none' }}
-                                    onChange={handleMediaUpload}
-                                />
-                            </label>
-                            <button className="post-button" onClick={handlePost}>
-                                Post
-                            </button>
                         </div>
-                    </div>
 
-                    {questions.map((question, index) => (
-                        <div
-                            key={index}
-                            className="post hoverable"
-                            onClick={() => handleViewDetails(question)}
-                        >
-                            <h3>{question.title}</h3>
-                            <p>
-                                {question.content.length > 100
-                                    ? `${question.content.slice(0, 100)}...`
-                                    : question.content}
-                            </p>
-                        </div>
-                    ))}
-                </main>
+                        {questions.map((question, index) => (
+                            <div
+                                key={index}
+                                className="post hoverable"
+                                onClick={() => handleViewDetails(question)}
+                            >
+                                <h3>{question.title}</h3>
+                                <p>
+                                    {question.content.length > 100
+                                        ? `${question.content.slice(0, 100)}...`
+                                        : question.content}
+                                </p>
+                            </div>
+                        ))}
+                    </main>
+                </div>
+
             </div>
-        </div>
+            <Footer />
+        </>
     );
 };
 

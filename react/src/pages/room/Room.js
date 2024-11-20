@@ -17,11 +17,19 @@ const CoopRoom = ({ username }) => {
         date: null,
     });
 
+    // Function to fetch reservations based on room number and date
     const fetchReservations = async (roomNumber, date) => {
         try {
+            // Create a new Date object and subtract 1 day
+            const adjustedDate = new Date(date);
+            adjustedDate.setDate(adjustedDate.getDate() + 1);
+    
+            // Format the adjusted date as needed (e.g., YYYY-MM-DD)
+            const formattedDate = adjustedDate.toISOString().split("T")[0];
+    
             const response = await axios.get(
                 `${API_BASE_URL}/reservations/available-rooms/`,
-                { params: { room_number: roomNumber, day: date } }
+                { params: { room_number: roomNumber, day: formattedDate } }
             );
             const reservedTimes = response.data.flatMap(reservation => reservation.time);
             setReservedSlots(reservedTimes);
@@ -30,18 +38,20 @@ const CoopRoom = ({ username }) => {
         }
     };
     
+
+    // Handle reservation logic
     const handleReserve = async (selectedSlots) => {
         if (!selectedRoom || !searchParams.date) {
             alert("Please select a room and a date.");
             return;
         }
-    
+
         const overlap = selectedSlots.some(slot => reservedSlots.includes(slot));
         if (overlap) {
             alert("Some of the selected slots are already reserved.");
             return;
         }
-    
+
         try {
             const reservationData = {
                 room_number: selectedRoom,
@@ -49,39 +59,39 @@ const CoopRoom = ({ username }) => {
                 time: selectedSlots,
                 day: searchParams.date,
             };
-    
+
             await axios.post(`${API_BASE_URL}/reservations/`, reservationData);
             alert("Reservation successful!");
-            fetchReservations(selectedRoom, searchParams.date);
+            fetchReservations(selectedRoom, searchParams.date);  // Refresh the reservations for the selected day
         } catch (error) {
             console.error("Error reserving slots:", error);
             alert("Failed to reserve the slots.");
         }
     };
-    
 
+    // Effect hook to fetch reservations when room or date changes
     useEffect(() => {
-        console.log(searchParams);
         if (selectedRoom && searchParams.date) {
-            fetchReservations(selectedRoom, searchParams.date);
+            fetchReservations(selectedRoom, searchParams.date);  // Trigger fetching of reservations
         }
-    }, [selectedRoom, searchParams.date]);
-    
+    }, [selectedRoom, searchParams.date]);  // Trigger this effect when either room or date changes
 
+    // Handle date change from the calendar
     const handleDateChange = (date) => {
         if (date) {
             setSearchParams((prev) => ({ ...prev, date }));
         } else {
             setSearchParams((prev) => ({ ...prev, date: null }));
-            setReservedSlots([]);
+            setReservedSlots([]);  // Clear reserved slots if no date selected
         }
     };
-    
-    
+
+    // Handle room selection from the 3D model
     const handleRoomSelect = (room) => {
-        setSelectedRoom(room.name.substr(4));
+        setSelectedRoom(room.name.substr(4));  // Assuming the room name has the format "Room 1"
     };
-    
+
+    // BABYLON.js scene setup
     useEffect(() => {
         const canvas = canvasRef.current;
         const engine = new BABYLON.Engine(canvas, true);
@@ -144,18 +154,26 @@ const CoopRoom = ({ username }) => {
             engine.dispose();
             window.removeEventListener("resize", () => engine.resize());
         };
-    }, []);
+    }, []);  // Run only once on component mount
 
     return (
         <div style={{ display: "flex" }}>
             <canvas
                 ref={canvasRef}
                 id="renderCanvas"
-                style={{ outline: "none", width: "100%", height: "92.5vh", marginTop: "7.5vh", position: "fixed",right: selectedRoom ? "20%" : "0%", transition: "0.5s",}}
+                style={{
+                    outline: "none",
+                    width: "100%",
+                    height: "92.5vh",
+                    marginTop: "7.5vh",
+                    position: "fixed",
+                    right: selectedRoom ? "20%" : "0%",
+                    transition: "0.5s",
+                }}
             ></canvas>
             <div
                 className="sidePanel"
-                style={{ width: selectedRoom ? "40%" : "0", marginTop: "7.5vh", }}
+                style={{ width: selectedRoom ? "40%" : "0", marginTop: "7.5vh" }}
             >
                 <h1>{selectedRoom ? `Room ${selectedRoom}` : ""}</h1>
                 <Calendar onDateChange={handleDateChange} searchParams={searchParams} />
@@ -164,7 +182,6 @@ const CoopRoom = ({ username }) => {
                     onReserve={handleReserve} 
                     date={searchParams.date}
                 />
-
             </div>
         </div>
     );

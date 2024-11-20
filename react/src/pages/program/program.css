@@ -7,12 +7,12 @@
 .card-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
-  gap: 25vh; /* Adjusted to vh */
-  max-width: 80%; /* Adjusted to vw to scale with the viewport width */
+  gap: 5vh; /* Adjusted to vh */
+  max-width: 80%;
   /* padding-left: 25%; */
   padding: 3%;
   /* padding-bottom: 10%; */
-  margin: 0 auto;
+  margin: auto;
   margin-bottom: 5%;
 }
 
@@ -26,7 +26,7 @@
   overflow: hidden;
   transition: transform 0.3s ease;
   height: 45vh; /* Set a fixed height using vh */
-  width: 35vh; /* Adjusted to vh for width as well */
+  /* width: 35vh; */
 
 }
 
@@ -52,7 +52,7 @@
 
 .card-link {
   display: inline-block;
-  margin-top: 3vh; /* Adjusted to vh */
+  margin-top: 3vh; 
   color: #53aa48;
   text-decoration: none;
   font-weight: 500;
@@ -63,7 +63,10 @@
 }
 
 .card-link .arrow {
-  margin-left: 0.5vh; /* Adjusted to vh */
+  float: inline-end;
+  margin-top: -15px;
+  margin-left: 1vh;
+  font-size: 36px;
 }
 
 /* Media Query for Tablet Devices */

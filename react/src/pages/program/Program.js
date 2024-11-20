@@ -4,6 +4,7 @@ import './program.css';
 import GUni from './asset/university-of-glasgow.jpg'
 import QUni from './asset/queenlanduni.jpg'
 import KUni from './asset/kmitl.jpg'
+import Footer from '../../components/footer/Footer';
 
 const Program = () => {
   return (
@@ -60,6 +61,7 @@ const Program = () => {
 
         
       </div>
+      <Footer />
     </div>
   );
 };
