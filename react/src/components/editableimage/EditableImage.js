@@ -50,7 +50,7 @@ const EditableMedia = ({ mediaTag, mediaStyle}) => {
             {mediaType === 'video' ? (
                 <video src={mediaSrc} style={combinedStyles} autoPlay loop muted />
             ) : (
-                <img src={mediaSrc} alt="Editable" style={combinedStyles} />
+                <img src={mediaSrc} style={combinedStyles} />
             )}
         </div>
     );

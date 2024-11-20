@@ -1,67 +1,86 @@
 /* Main container for the forum layout */
 .forum-container {
-    margin: 0 400px; /* Adjusts space on left and right */
-    display: flex; /* Sets up flexbox for layout */
+    margin: 0 400px;
+    /* Adjusts space on left and right */
+    display: flex;
+    /* Sets up flexbox for layout */
     margin-top: 5%;
-    
+
 }
 
 /* Content section with left margin for sidebar space */
 .content {
-    min-height: 100vh; /* Ensures content covers full viewport height */
+    min-height: 100vh;
+    /* Ensures content covers full viewport height */
     padding-top: 5%;
     height: auto;
-    margin-left: 300px; /* Creates space for the sidebar */
-    width: calc(100% - 270px); /* Adjusts width to account for sidebar */
+    margin-left: 300px;
+    /* Creates space for the sidebar */
+    width: calc(100% - 270px);
+    /* Adjusts width to account for sidebar */
 }
 
 /* Header styling */
 header h1 {
     font-size: 24px;
-    color: #333; /* Dark gray color for header text */
+    color: #333;
+    /* Dark gray color for header text */
 }
 
 /* Questions section with spacing between question items */
 .questions {
     display: flex;
-    flex-direction: column; /* Stacks questions vertically */
-    gap: 20px; /* Space between each question */
+    flex-direction: column;
+    /* Stacks questions vertically */
+    gap: 20px;
+    /* Space between each question */
     padding-top: 15px;
 }
 
 /* Individual question card styling */
 .question {
-    background-color: #fff; /* White background for contrast */
-    border: 1px solid #ddd; /* Light border for separation */
+    background-color: #fff;
+    /* White background for contrast */
+    border: 1px solid #ddd;
+    /* Light border for separation */
     padding: 15px;
-    border-radius: 5px; /* Rounded corners for modern look */
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 5px;
+    /* Rounded corners for modern look */
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
 }
 
 /* Question title styling */
 .question h3 {
     font-size: 18px;
-    color: #007bff; /* Blue color for title */
+    color: #007bff;
+    /* Blue color for title */
     margin-bottom: 10px;
 }
 
 /* Link styling within question title */
 .question h3 a {
-    text-decoration: none; /* Removes underline from link */
-    color: #007bff; /* Matches title color */
-    transition: color 0.3s ease; /* Smooth transition on hover */
+    text-decoration: none;
+    /* Removes underline from link */
+    color: #007bff;
+    /* Matches title color */
+    transition: color 0.3s ease;
+    /* Smooth transition on hover */
 }
 
 .question h3 a:hover {
-    color: #0056b3; /* Darker blue on hover for emphasis */
+    color: #0056b3;
+    /* Darker blue on hover for emphasis */
 }
 
 /* Question description styling */
 .question p {
-    color: #555; /* Medium gray for readability */
+    color: #555;
+    /* Medium gray for readability */
 }
 
-.form-input, .form-textarea {
+.form-input,
+.form-textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
@@ -91,212 +110,253 @@ header h1 {
 }
 
 .question img {
-    max-width: 100%; /* Ensures the image does not exceed the container's width */
-    max-height: 300px; /* Limits the height of the image */
-    width: auto; /* Maintains aspect ratio */
-    height: auto; /* Maintains aspect ratio */
-    border-radius: 8px; /* Optional: Adds rounded corners */
-    object-fit: cover; /* Ensures the image fills the space while maintaining aspect ratio */
+    max-width: 100%;
+    /* Ensures the image does not exceed the container's width */
+    max-height: 300px;
+    /* Limits the height of the image */
+    width: auto;
+    /* Maintains aspect ratio */
+    height: auto;
+    /* Maintains aspect ratio */
+    border-radius: 8px;
+    /* Optional: Adds rounded corners */
+    object-fit: cover;
+    /* Ensures the image fills the space while maintaining aspect ratio */
     margin-top: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for better aesthetics */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Optional: Adds a subtle shadow for better aesthetics */
 }
 
 
-        /* Main Content Styling */
-        main {
-            margin-left: 220px;
-            padding: 20px;
-        }
+/* Main Content Styling */
+main {
+    margin: 0;
+    padding: 20px;
+}
 
-        .post {
-            background-color: #ffffff; /* White for clean contrast */
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            border-left: 5px solid #2ecc71; /* Green accent on the left */
-        }
+.post {
+    background-color: #ffffff;
+    /* White for clean contrast */
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #ff8829;
+    /* Green accent on the left */
+}
 
-        .post h3 {
-            margin: 0 0 10px;
-            color: #27ae60; /* Green title color */
-        }
+.post h3 {
+    margin: 0 0 10px;
+    color: #000000;
+    /* Green title color */
+}
 
-        .post p {
-            color: #2f4f4f; /* Subtle text color */
-        }
+.post p {
+    color: #2f4f4f;
+    /* Subtle text color */
+}
 
-        .post-container {
-            background-color: #ffffff; /* White background for the post area */
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            border-left: 5px solid #2ecc71; /* Green accent for the post */
-            width: 120vh;
-        }
+/* Post Container with Gradient Left Border */
+.post-container {
+    position: relative; /* Required for pseudo-element positioning */
+    background-color: #ffffff; /* White background for the post */
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 150vh;
+}
 
-        /* Input for the Title */
-        .post-container input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 2px solid #27ae60; /* Green border */
-            border-radius: 5px;
-            font-size: 16px;
-            color: #2f4f4f;
-        }
-
-        /* Textarea for the Details */
-        .post-container textarea {
-            width: 100%;
-            height: 100px;
-            padding: 10px;
-            border: 2px solid #27ae60; /* Green border */
-            border-radius: 5px;
-            font-size: 16px;
-            color: #2f4f4f;
-            resize: none;
-        }
-
-        /* Action Buttons */
-        .actions {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 10px;
-            gap: 10px; /* Adds space between buttons */
-
-        }
-
-        .actions button {
-            background-color: #27ae60; /* Green background */
-            color: #ffffff; /* White text */
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .actions button:hover {
-            background-color: #2ecc71; /* Lighter green on hover */
-        }
-
-        .actions label {
-            display: inline-block;
-            background-color: #27ae60; /* Green background for Photo/Video */
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            text-align: center;
-        }
-
-        .actions label:hover {
-            background-color: #2ecc71; /* Lighter green on hover */
-        }
+/* Left Border Effect Using Pseudo-Element */
+.post-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 5px; /* Border thickness */
+    background: linear-gradient(to bottom, #ff8829, #a5c90f, #6f9c3d);
+    border-radius: 10px 0 0 10px; /* Matches container's border-radius */
+}
 
 
-        
-        .forum-main {
-            display: flex;
-            justify-content: center; /* Horizontal centering */
-            min-height: 100vh;           /* Full height of the viewport */
-        }
+/* Input for the Title */
+.post-container input[type="text"] {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #d1d1d1;
+    /* Green border */
+    border-radius: 5px;
+    font-size: 16px;
+    color: #2f4f4f;
+}
 
-        .post-button {
-            margin-top: 10px;
-            padding: 8px 16px;
-            background-color: #27ae60;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .post-button:hover {
-            background-color: #2ecc71;
-        }
-        
-        .media-preview img,
+/* Textarea for the Details */
+.post-container textarea {
+    width: 90%;
+    height: 100px;
+    padding: 10px;
+    border: 2px solid #d1d1d1;
+    /* Green border */
+    border-radius: 5px;
+    font-size: 16px;
+    color: #2f4f4f;
+    resize: none;
+}
 
-        .media-preview video {
-            max-width: 100%;
-            max-height: 300px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
+.actions {
+    display: flex;
+    align-self: self-end;
+    justify-content: right;
+    margin-top: 10px;
+    gap: 10px;
+    vertical-align: top;
+}
+
+.actions button, .actions label {
+    margin-top: 0px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #a5c90f;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    width: 150px;
+    height: 40px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.actions button:hover, .actions label:hover {
+    background-color: #8fb80c;
+}
+
+
+.forum-main {
+    display: flex;
+    justify-content: center;
+    /* Horizontal centering */
+    min-height: 100vh;
+    /* Full height of the viewport */
+}
+
+.post-button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #a5c90f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.post-button:hover {
+    background-color: #a5c90f;
+}
+
+.media-preview img,
+.media-preview video {
+    max-width: 100%;
+    max-height: 150px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 10px;
+}
 
 
 
-                /* Hover effect for clickable posts */
-        .post.hoverable {
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
+/* Hover effect for clickable posts */
+.post.hoverable {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-        .post.hoverable:hover {
-            transform: scale(1.02); /* Slightly enlarges the element */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow on hover */
-        }
+.post.hoverable:hover {
+    transform: scale(1.02);
+    /* Slightly enlarges the element */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Adds shadow on hover */
+}
 
-        /* Hover effect for text inside posts */
-        .hoverable-text {
-            color: #333; /* Default text color */
-            transition: color 0.2s ease;
-        }
+/* Hover effect for text inside posts */
+.hoverable-text {
+    color: #333;
+    /* Default text color */
+    transition: color 0.2s ease;
+}
 
-        .hoverable-text:hover {
-            color: #007bff; /* Blue color for text on hover */
-        }
+.hoverable-text:hover {
+    color: #007bff;
+    /* Blue color for text on hover */
+}
 
-        /* Hover effect for media inside posts */
-        .hoverable-media {
-            transition: transform 0.2s ease, opacity 0.2s ease;
-        }
+/* Hover effect for media inside posts */
+.hoverable-media {
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
 
-        .hoverable-media:hover {
-            transform: scale(1.05); /* Slightly enlarges the image or video */
-            opacity: 0.9; /* Adds subtle dimming */
-        }
+.hoverable-media:hover {
+    transform: scale(1.05);
+    /* Slightly enlarges the image or video */
+    opacity: 0.9;
+    /* Adds subtle dimming */
+}
 
-        .question-media {
-            width: 100%; /* Container width */
-            max-height: 300px; /* Restricts the maximum height */
-            overflow: hidden; /* Prevents image overflow */
-            display: flex; /* Ensures alignment */
-            justify-content: center; /* Centers the image */
-            align-items: center; /* Centers vertically */
-        }
-        
-        /* Style for the image inside the question media */
-        .question-media img {
-            max-width: 100%; /* Ensure the image does not exceed container width */
-            max-height: 300px; /* Maintain aspect ratio */
-            object-fit: cover; /* Ensures the image fills the container gracefully */
-            border-radius: 8px; /* Adds rounded corners */
-        }
+.question-media {
+    width: 100%;
+    /* Container width */
+    max-height: 300px;
+    /* Restricts the maximum height */
+    overflow: hidden;
+    /* Prevents image overflow */
+    display: flex;
+    /* Ensures alignment */
+    justify-content: center;
+    /* Centers the image */
+    align-items: center;
+    /* Centers vertically */
+}
 
-        .error-text {
-            color: red;
-            font-size: 14px;
-            margin-top: 5px;
-            min-height: 18px; /* Reserve space for the error message */
-            visibility: visible; /* Show when error is active */
-        }
-        
-        .error-text.hidden {
-            visibility: hidden; /* Hide when no error */
-        }
+/* Style for the image inside the question media */
+.question-media img {
+    max-width: 100%;
+    /* Ensure the image does not exceed container width */
+    max-height: 300px;
+    /* Maintain aspect ratio */
+    object-fit: cover;
+    /* Ensures the image fills the container gracefully */
+    border-radius: 8px;
+    /* Adds rounded corners */
+}
 
-        input::placeholder {
-            color: inherit; /* Default placeholder color */
-        }
-        
-        input[style*="red"]::placeholder {
-            color: red; /* Placeholder color when error is true */
-        }
-        
+.error-text {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    min-height: 18px;
+    /* Reserve space for the error message */
+    visibility: visible;
+    /* Show when error is active */
+}
+
+.error-text.hidden {
+    visibility: hidden;
+    /* Hide when no error */
+}
+
+input::placeholder {
+    color: inherit;
+    /* Default placeholder color */
+}
+
+input[style*="red"]::placeholder {
+    color: red;
+    /* Placeholder color when error is true */
+}

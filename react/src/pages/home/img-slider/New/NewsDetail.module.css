@@ -1,0 +1,99 @@
+/* NewsDetail.module.css */
+.newsDetail {
+    font-family: 'Arial', sans-serif;
+    color: black;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    border-radius: 10px;
+    margin-top: 5%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    min-height: 120vh;
+}
+
+.newsDetailBG{
+    width: 100%;
+
+    background-color: white;
+}
+
+.header {
+    font-size: 36px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    margin: 0 auto; 
+    padding: 10px;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+
+.date {
+    font-size: 0.9em;
+    color: #6b8f6a;
+}
+
+.content {
+    text-align: center;
+}
+
+.image {
+    max-width: 100%;
+    min-height: 50vh;
+    max-height: 50vh;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.detail {
+    text-align: justify;
+    line-height: 1.6;
+    font-size: 1em;
+}
+
+.ecoFact {
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 10px;
+    font-size: 0.95em;
+    text-align: center;
+}
+
+.ecoFact h2 {
+    margin-bottom: 10px;
+    color: #256029;
+}
+
+.footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.newsDetail p{
+    font-size: 20px;
+}
+.ctaButton {
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.ctaButton:hover {
+    background-color: #1b5e20;
+}
+
+.errorMessage {
+    text-align: center;
+    color: #b71c1c;
+    padding: 20px;
+}

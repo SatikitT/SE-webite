@@ -1,73 +1,103 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { API_BASE_URL } from '../../api';
 import './Forum.css';
-// import SideNav from './component/side-nav/side-nav.js';
 
-const PageContainer = () => {
+const Forum = ({ username }) => {
     const [questions, setQuestions] = useState([]);
     const [title, setTitle] = useState('');
     const [details, setDetails] = useState('');
     const [media, setMedia] = useState(null);
-    const [titleError, setTitleError] = useState(false); // Error state for title
-    const [mediaError, setMediaError] = useState(false); // Error state for media
+    const [titleError, setTitleError] = useState(false);
+    const [mediaError, setMediaError] = useState(false);
     const navigate = useNavigate();
 
-    const handlePost = () => {
+    useEffect(() => {
+        fetchPost();
+    }, []);
+
+    const fetchPost = ()=> {
+        fetch(`${API_BASE_URL}/forums/1/posts/`)
+        .then((res) => res.json())
+        .then((data) => setQuestions(data))
+        .catch((err) => console.error(err));
+    };
+
+    const handlePost = async () => {
         if (!title.trim()) {
-            setTitleError(true); // Show error if title is missing
+            setTitleError(true);
             return;
         }
-        const newQuestion = { title, body: details, media, username: 'example_user' };
-        setQuestions([newQuestion, ...questions]);
-        setTitle('');
-        setDetails('');
-        setMedia(null); // Clear media after posting
-        setTitleError(false); // Clear error after successful post
-        setMediaError(false); // Clear media error after successful post
+
+        const postPayload = { title, content: details, username };
+        try {
+            const response = await axios.post(`${API_BASE_URL}/forums/1/posts/?title=${title}&content=${details}&username=${username}`);
+
+            if (response.status === 200) {
+                const newPost = response.data;
+                setQuestions([newPost, ...questions]);
+
+                if (media) {
+                    const formData = new FormData();
+                    formData.append('tag', newPost.title);
+                    formData.append('file', media);
+
+                    await axios.post(`${API_BASE_URL}/update-image`, formData, {
+                        headers: { 'Content-Type': 'multipart/form-data' },
+                    });
+                }
+
+                // Reset form
+                setTitle('');
+                setDetails('');
+                setMedia(null);
+                setTitleError(false);
+                setMediaError(false);
+
+                fetchPost();
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
     };
 
     const handleMediaUpload = (e) => {
         const file = e.target.files[0];
-        if (file) {
-            if (file.type.startsWith('image')) {
-                setMedia(file);
-                setMediaError(false); // Clear media error if file is valid
-            } else {
-                setMedia(null);
-                setMediaError(true); // Show error if file is not an image
-            }
+        if (file && file.type.startsWith('image')) {
+            setMedia(file);
+            setMediaError(false);
+        } else {
+            setMedia(null);
+            setMediaError(true);
         }
     };
 
     const handleViewDetails = (question) => {
-        navigate(`/forum/${encodeURIComponent(question.title)}`, {
-            state: { question }
-        });
+        console.log(question);
+        navigate(`/forum/${encodeURIComponent(question.title)}`, { state: { question } });
     };
 
     return (
-        <div className='forum-main'>
-            <div className='forum-container'>
-
+        <div className="forum-main">
+            <div className="forum-container">
                 <main>
                     <div className="post-container">
                         <input
                             type="text"
                             placeholder={
                                 titleError
-                                    ? '!Title needs to be written before post'
-                                    : "What's on your mind, Petch?"
+                                    ? '! Title is required'
+                                    : "What's on your mind?"
                             }
                             value={title}
                             onChange={(e) => {
                                 setTitle(e.target.value);
-                                if (e.target.value.trim()) {
-                                    setTitleError(false); // Clear error when title is typed
-                                }
+                                if (e.target.value.trim()) setTitleError(false);
                             }}
                             style={{
-                                borderColor: titleError ? 'red' : '#27ae60', // Change border color
-                                color: titleError ? 'red' : 'inherit', // Change text color
+                                borderColor: titleError ? '#ff6961' : '#d1d1d1',
+                                color: titleError ? '#ff6961' : 'inherit',
                             }}
                         />
 
@@ -76,18 +106,6 @@ const PageContainer = () => {
                             value={details}
                             onChange={(e) => setDetails(e.target.value)}
                         ></textarea>
-                        <div className="actions">
-                            <label>
-                                🖼️ Photo
-                                <input
-                                    type="file"
-                                    accept="image/*" // Restrict to images only
-                                    style={{ display: 'none' }}
-                                    onChange={handleMediaUpload}
-                                />
-                            </label>
-                            <button>😊 Feeling/Activity</button>
-                        </div>
 
                         {mediaError && (
                             <p className="error-text">Only image files are allowed!</p>
@@ -98,40 +116,45 @@ const PageContainer = () => {
                                 <img
                                     src={URL.createObjectURL(media)}
                                     alt="Preview"
-                                    style={{ maxWidth: '100%', maxHeight: '300px', marginTop: '10px' }}
+                                    style={{ maxWidth: '100%' }}
                                 />
                             </div>
                         )}
 
-                        <button className="post-button" onClick={handlePost}>
-                            Post
-                        </button>
+                        <div className="actions">
+                            <label>
+                                + Add Photo
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                    onChange={handleMediaUpload}
+                                />
+                            </label>
+                            <button className="post-button" onClick={handlePost}>
+                                Post
+                            </button>
+                        </div>
                     </div>
 
                     {questions.map((question, index) => (
-                        <div 
-                            key={index} 
-                            className="post hoverable" 
+                        <div
+                            key={index}
+                            className="post hoverable"
                             onClick={() => handleViewDetails(question)}
                         >
-                            <h3 className="hoverable-text">{question.title}</h3>
-                            <p className="hoverable-text">{question.body}</p>
-                            {question.media && (
-                                <div className="question-media hoverable">
-                                    <img
-                                        src={URL.createObjectURL(question.media)}
-                                        alt="Posted media"
-                                        className="hoverable-media"
-                                    />
-                                </div>
-                            )}
+                            <h3>{question.title}</h3>
+                            <p>
+                                {question.content.length > 100
+                                    ? `${question.content.slice(0, 100)}...`
+                                    : question.content}
+                            </p>
                         </div>
                     ))}
-
                 </main>
             </div>
         </div>
     );
 };
 
-export default PageContainer;
+export default Forum;

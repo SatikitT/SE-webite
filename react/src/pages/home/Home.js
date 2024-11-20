@@ -18,7 +18,7 @@ const Home = ({isAdmin}) => {
         <>
             <div className="page-container">
                 <EditableMedia mediaTag={"mainpage"} mediaStyle={imgStyles}/>
-
+                <div className='gradient'></div>
                 <div className="text-over1">
                     <div>
                         SOFTWARE<br></br>ENGINEERING

@@ -8,7 +8,7 @@ import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/
 import { InteractionStatus } from "@azure/msal-browser";
 import { loginRequest } from '../AuthConfig';
 
-function Header() {
+function Header ({isAdmin = false}) {
     const { instance, inProgress } = useMsal();
     const activeAccount = instance.getActiveAccount();
     const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -55,6 +55,7 @@ function Header() {
 
     return (
         <header className='header'>
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"></link>
             <div className='main-nav-container'>
                 <hr className='header-gradient'></hr>
                 <div className='container'>
@@ -86,6 +87,13 @@ function Header() {
                         <li className='navs-button'>
                             <Link to="/about">About</Link>
                         </li>
+                        {
+                            isAdmin ? (
+                                <li className='navs-button'>
+                                <Link to="/admin">Admin only</Link>
+                                </li>
+                            ) : (<></>)
+                        }
                     </ul>
 
                     <div className='profile-container'>
@@ -110,7 +118,6 @@ function Header() {
                                     </a>
                                 </div>
                             </div>
-
                         </AuthenticatedTemplate>
                     </div>
                 </div>

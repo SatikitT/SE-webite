@@ -212,7 +212,7 @@ const Admin = () => {
             <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"></link>
             <div className="admin-wrapper">
                 <div className="sidebar">
-                    <h2>Admin Panel</h2>
+                    <h2 style={{color:'white'}}>Admin Panel</h2>
                     <div className="menu-item">
                         <a href="#!" onClick={() => handleSectionSwitch("statistics")}>
                             <i className="far fa-chart-bar"></i> Satistics

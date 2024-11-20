@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/home/Home';
-import About from './pages/about2/About';
-import Forum from './pages/forum/Forum';
+import About from './pages/about/About';
+import Forum from './pages/forum2/Forum';
 import Post from './components/Post';
 import AddPost from './components/AddPost';
 import CoopRoom from './pages/room/Room';
@@ -14,11 +14,13 @@ import GlassGlow from './pages/program/SubProgram/GlassGlow/GlassGlow';
 import Queensland from './pages/program/SubProgram/Queensland/Queenland';
 import Software from './pages/program/SubProgram/Software/Software';
 import Admission from './pages/admission/Admission';
+import NewsDetail from './pages/home/img-slider/New/NewDetail';
+import QuestionDetail from './pages/forum2/PostDetail';
 import { MsalProvider } from "@azure/msal-react";
 import './App.css';
 
-const admin = ["Satikit Tapbumrong"];
-
+const admin = ["Satikit Tapbumrong", "Jirawatt Chimmanee", "Natchapon Sukthep"];
+ 
 const App = ({ instance }) => {
   const [activeAccount, setActiveAccount] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -61,7 +63,7 @@ const App = ({ instance }) => {
   return (
     <MsalProvider instance={instance}>
       <Router>
-        <Header />
+        <Header isAdmin={isAdmin} />
         <Routes>
           <Route path="/" element={<Home isAdmin={isAdmin} />} />
           <Route
@@ -71,7 +73,11 @@ const App = ({ instance }) => {
             }
           />
           <Route path="/about" element={<About />} />
-          <Route path="/admin" element={<Admin />} />
+          
+          {isAdmin && (
+            <Route path="/admin" element={<Admin />} />
+          )}
+          
           <Route path="/forums" element={<Forum />} />
           <Route path="/map" element={<Map />} />
           <Route path="/admission" element={<Admission />} />
@@ -80,6 +86,8 @@ const App = ({ instance }) => {
           <Route path="/program/glasgow" element={<GlassGlow />} />
           <Route path="/program/queensland" element={<Queensland />} />
           <Route path="forums/:forumId/posts/:postId" element={<Post />} />
+          <Route path="/news-detail" element={<NewsDetail />} />
+          <Route path="/forum/:title" element={<QuestionDetail />} />
           <Route
             path="/add-post"
             element={

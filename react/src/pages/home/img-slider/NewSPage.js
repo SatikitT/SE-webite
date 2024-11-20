@@ -3,6 +3,7 @@ import './NewsPage.css';
 import axios from 'axios';
 import { API_BASE_URL } from '../../../api';
 import EditableMedia from '../../../components/editableimage/EditableImage';
+import { Link } from 'react-router-dom';
 
 const NewsPage = () => {
     const [newsItems, setNewsItems] = useState([]);
@@ -14,7 +15,7 @@ const NewsPage = () => {
                 const response = await axios.get(`${API_BASE_URL}/items/`);
                 const filteredNews = response.data
                     .filter((item) => item.type === 'news')
-                    .slice(-8) 
+                    .slice(-8)
                     .reverse();
                 setNewsItems(filteredNews);
             } catch (error) {
@@ -28,7 +29,7 @@ const NewsPage = () => {
     useEffect(() => {
         const handleScroll = () => {
             const newsPageElement = document.querySelector('.news-page');
-            if (!newsPageElement) return; // Skip execution if the element doesn't exist
+            if (!newsPageElement) return;
 
             const newsPagePosition = newsPageElement.offsetTop;
             const scrollPosition = window.scrollY + window.innerHeight;
@@ -47,7 +48,6 @@ const NewsPage = () => {
         };
     }, []);
 
-
     if (newsItems.length === 0) {
         return <div>Loading news...</div>;
     }
@@ -57,17 +57,18 @@ const NewsPage = () => {
             <h2 className="section-title">News and Activity</h2>
             <div className="news-grid">
                 {newsItems.map((item, index) => (
-                    <div className="news-item" key={index}>
-                        <a href={item.link || '#'}>
-                            <EditableMedia mediaTag={item.title}/>
-                        </a>
+                    <Link
+                        to="/news-detail"
+                        state={item}
+                        className="news-item"
+                        key={index}
+                    >
+                        <EditableMedia mediaTag={item.title} mediaStyle={{ height: '180px', objectFit: 'cover' }} />
                         <div className="news-text">
                             <h2>{item.title}</h2>
-                            <a href={item.link || '#'} className="news-link">
-                                <p>{item.description || 'Read More'}</p>
-                            </a>
+                            <p className="news-link">{item.description || 'Read More'}</p>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>
