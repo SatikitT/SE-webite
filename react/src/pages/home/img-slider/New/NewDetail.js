@@ -29,7 +29,7 @@ const NewsDetail = () => {
                 </header>
 
                 <div className={styles.content}>
-                    <EditableMedia mediaTag={newsItem.title} mediaStyle={{ borderRadius: "10px", width: '100px' }} />
+                    <EditableMedia mediaTag={newsItem.title} mediaStyle={{ borderRadius: "10px" }} />
                     <p className={styles.detail}>{newsItem.detail}</p>
                 </div>
 
