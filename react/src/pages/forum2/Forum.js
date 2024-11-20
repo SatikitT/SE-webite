@@ -75,6 +75,10 @@ const Forum = ({ username }) => {
         }
     };
 
+    const handleDeleteMedia = () => {
+        setMedia(null);
+    };
+
     const handleViewDetails = (question) => {
         console.log(question);
         navigate(`/forum/${encodeURIComponent(question.title)}`, { state: { question } });
@@ -115,12 +119,44 @@ const Forum = ({ username }) => {
                             )}
 
                             {media && (
-                                <div className="media-preview">
+                                <div
+                                    className="media-preview"
+                                    style={{
+                                        position: 'relative',
+                                        display: 'inline-block',
+                                        maxWidth: '100%',
+                                    }}
+                                >
                                     <img
                                         src={URL.createObjectURL(media)}
                                         alt="Preview"
-                                        style={{ maxWidth: '100%' }}
+                                        style={{
+                                            width: '100%',
+                                            height: 'auto',
+                                            borderRadius: '8px',
+                                        }}
                                     />
+                                    <button
+                                        className="delete-button"
+                                        onClick={handleDeleteMedia}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '0px',
+                                            right: '-10px',
+                                            background: 'rgba(0, 0, 0, 0.7)',
+                                            color: '#fff',
+                                            border: 'none',
+                                            borderRadius: '50%',
+                                            width: '30px',
+                                            height: '30px',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        ✖
+                                    </button>
                                 </div>
                             )}
 
@@ -146,18 +182,22 @@ const Forum = ({ username }) => {
                                 className="post hoverable"
                                 onClick={() => handleViewDetails(question)}
                             >
-                                <h3>{question.title}</h3>
-                                <p>
-                                    {question.content.length > 100
-                                        ? `${question.content.slice(0, 100)}...`
-                                        : question.content}
-                                </p>
-                                <EditableMedia mediaTag={question.title} mediaStyle={{width: '100px', maxHeight: '100px'}}/>
+                                <div style={{ display: 'flex', justifyContent: 'space-aound' }}>
+                                    <div>
+                                        <h3>{question.title}</h3>
+                                        <p>
+                                            {question.content.length > 100
+                                                ? `${question.content.slice(0, 100)}...`
+                                                : question.content}
+                                        </p>
+                                    </div>
+                                    <EditableMedia mediaTag={question.title} mediaStyle={{ width: '100px', maxHeight: '100px'}} />
+                                </div>
+
                             </div>
                         ))}
                     </main>
                 </div>
-
             </div>
             <Footer />
         </>
