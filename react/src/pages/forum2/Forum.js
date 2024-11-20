@@ -4,6 +4,7 @@ import axios from 'axios';
 import { API_BASE_URL } from '../../api';
 import './Forum.css';
 import Footer from '../../components/footer/Footer';
+import EditableMedia from '../../components/editableimage/EditableImage';
 
 const Forum = ({ username }) => {
     const [questions, setQuestions] = useState([]);
@@ -151,6 +152,7 @@ const Forum = ({ username }) => {
                                         ? `${question.content.slice(0, 100)}...`
                                         : question.content}
                                 </p>
+                                <EditableMedia mediaTag={question.title} mediaStyle={{width: '100px', maxHeight: '100px'}}/>
                             </div>
                         ))}
                     </main>

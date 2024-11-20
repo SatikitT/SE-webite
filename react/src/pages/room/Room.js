@@ -20,9 +20,8 @@ const CoopRoom = ({ username }) => {
     // Function to fetch reservations based on room number and date
     const fetchReservations = async (roomNumber, date) => {
         try {
-            // Create a new Date object and subtract 1 day
             const adjustedDate = new Date(date);
-            adjustedDate.setDate(adjustedDate.getDate() + 1);
+            adjustedDate.setDate(adjustedDate.getDate());
     
             // Format the adjusted date as needed (e.g., YYYY-MM-DD)
             const formattedDate = adjustedDate.toISOString().split("T")[0];
@@ -53,6 +52,7 @@ const CoopRoom = ({ username }) => {
         }
 
         try {
+            
             const reservationData = {
                 room_number: selectedRoom,
                 reserver: username,

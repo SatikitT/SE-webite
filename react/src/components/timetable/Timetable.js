@@ -2,12 +2,7 @@ import React, { useState } from "react";
 import "./timetable.css";
 
 const Timetable = ({ reservedSlots = [], onReserve, date = null }) => {
-    const timeSlots = [];
-
-    for (let i = 6; i <= 22; i++) {
-        timeSlots.push(i);
-    }
-
+    const timeSlots = Array.from({ length: 17 }, (_, i) => i + 6); // Generate time slots from 6:00 to 22:00
     const [selectedTimes, setSelectedTimes] = useState([]);
 
     const toggleTimeSlot = (time) => {
@@ -28,35 +23,47 @@ const Timetable = ({ reservedSlots = [], onReserve, date = null }) => {
         }
     };
 
-    if (date === null){
-        return;
+    if (!date) {
+        return <div className="no-date-message">Please select a date to view the timetable.</div>;
     }
-        
+
     return (
-        <>
-            <div className="timetable-container">
-                <div className="row" style={{ fontWeight: 'bold' }}>
-                    <div className="time-slot">Time</div>
-                    <div className="header-slot">Reservation</div>
+        <div className="timetable-wrapper">
+            <h2 className="timetable-header">{`Timetable for ${date}`}</h2>
+            <div className="timetable">
+                <div className="timetable-header-row">
+                    <div className="time-slot-header">Time</div>
+                    <div className="status-slot-header">Status</div>
                 </div>
-                <div className="scrollable-rows">
+                <div className="timetable-body">
                     {timeSlots.map((time) => (
-                        <div className="row" key={time}>
-                            <div className="time-slot">{time}:00</div>
-                            <div className={`reservation-slot ${reservedSlots.includes(time) ? "reserved" : ""} ${selectedTimes.includes(time) ? "selected" : ""}`}
-                                onClick={() => toggleTimeSlot(time)}
-                            >
-                                {reservedSlots.includes(time) ? "Reserved" : selectedTimes.includes(time) ? "Selected" : "+ Add"}
+                        <div
+                            key={time}
+                            className={`timetable-row ${
+                                reservedSlots.includes(time)
+                                    ? "reserved"
+                                    : selectedTimes.includes(time)
+                                    ? "selected"
+                                    : "available"
+                            }`}
+                            onClick={() => toggleTimeSlot(time)}
+                        >
+                            <div className="time-slot">{`${time}:00`}</div>
+                            <div className="status-slot">
+                                {reservedSlots.includes(time)
+                                    ? "Reserved"
+                                    : selectedTimes.includes(time)
+                                    ? "Selected"
+                                    : "Available"}
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
-            <button onClick={handleReserve} className="reserve-button" style={{position: "relative", left: "75%", marginTop: "20px"}}>
-                Reserve
+            <button className="reserve-button" onClick={handleReserve}>
+                Reserve Selected
             </button>
-
-        </>
+        </div>
     );
 };
 

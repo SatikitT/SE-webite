@@ -16,7 +16,7 @@ const Calendar = ({ searchParams, onDateChange }) => {
             const selectedDate = new Date(
                 currentDate.getFullYear(),
                 currentDate.getMonth(),
-                selectedDay
+                selectedDay + 1
             );
 
             const newDate = selectedDate.toISOString().split("T")[0];
@@ -36,11 +36,6 @@ const Calendar = ({ searchParams, onDateChange }) => {
         setSelectedDay(today.getDate());
     };
 
-    const unselectDay = () => {
-        setSelectedDay(null);
-        onDateChange(null);
-    };
-
     const getDaysInMonth = (year, month) => {
         return new Date(year, month + 1, 0).getDate();
     };
@@ -49,25 +44,7 @@ const Calendar = ({ searchParams, onDateChange }) => {
         const newDate = new Date(currentDate);
         newDate.setMonth(currentDate.getMonth() + direction);
         setCurrentDate(newDate);
-    };
-
-    const changeDay = (direction) => {
-        const daysInMonth = getDaysInMonth(currentDate.getFullYear(), currentDate.getMonth());
-        const newDay = selectedDay + direction;
-
-        if (newDay < 1) {
-            const prevMonth = new Date(currentDate);
-            prevMonth.setMonth(currentDate.getMonth() - 1);
-            setCurrentDate(prevMonth);
-            setSelectedDay(getDaysInMonth(prevMonth.getFullYear(), prevMonth.getMonth()));
-        } else if (newDay > daysInMonth) {
-            const nextMonth = new Date(currentDate);
-            nextMonth.setMonth(currentDate.getMonth() + 1);
-            setCurrentDate(nextMonth);
-            setSelectedDay(1);
-        } else {
-            setSelectedDay(newDay);
-        }
+        setSelectedDay(null); // Clear selection when changing months
     };
 
     const generateCalendarDays = () => {
@@ -92,61 +69,50 @@ const Calendar = ({ searchParams, onDateChange }) => {
     return (
         <div className="calendar-container">
             <div className="calendar-header">
-                {selectedDay && (
-                    <button className="back-button" onClick={unselectDay}>
-                        Back
-                    </button>
-                )}
-                <div className="header-controls">
-                    {!selectedDay ? (
-                        <>
-                            <button className="prev-button" onClick={() => changeMonth(-1)}>{"<"}</button>
-                            <h3 className="date-header">
-                                {`${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`}
-                            </h3>
-                            <div className="right-buttons">
-                                <button className="today-button" onClick={returnToToday}>Today</button>
-                                <button className="next-button" onClick={() => changeMonth(1)}>{">"}</button>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <button className="prev-button" onClick={() => changeDay(-1)}>{"<"}</button>
-                            <h3 className="date-header">
-                                {`${selectedDay} ${months[currentDate.getMonth()]}`}
-                            </h3>
-                            <div className="right-buttons">
-                                <button className="today-button" onClick={returnToToday}>Today</button>
-                                <button className="next-button" onClick={() => changeDay(1)}>{">"}</button>
-                            </div>
-                        </>
-                    )}
-                </div>
-
+                <button
+                    className="month-button prev"
+                    onClick={() => changeMonth(-1)}
+                    aria-label="Previous Month"
+                >
+                    {"<"}
+                </button>
+                <h3 className="date-header">
+                    {`${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`}
+                </h3>
+                <button
+                    className="month-button next"
+                    onClick={() => changeMonth(1)}
+                    aria-label="Next Month"
+                >
+                    {">"}
+                </button>
             </div>
 
-            {!selectedDay && (
-                <>
-                    <div className="calendar-weekdays">
-                        {weekdays.map((day, index) => (
-                            <div key={index} className="weekday">
-                                {day}
-                            </div>
-                        ))}
+            <div className="calendar-weekdays">
+                {weekdays.map((day, index) => (
+                    <div key={index} className="weekday">
+                        {day}
                     </div>
-                    <div className="calendar-days">
-                        {calendarDays.map((day, index) => (
-                            <div
-                                key={index}
-                                className={`calendar-day ${day ? (day === selectedDay ? "selected" : "") : "empty-day"}`}
-                                onClick={() => handleSelectDay(day)}
-                            >
-                                {day}
-                            </div>
-                        ))}
+                ))}
+            </div>
+            <div className="calendar-days">
+                {calendarDays.map((day, index) => (
+                    <div
+                        key={index}
+                        className={`calendar-day ${
+                            day === selectedDay ? "selected" : day ? "active" : "empty"
+                        } ${day === new Date().getDate() && !selectedDay ? "current" : ""}`}
+                        onClick={day ? () => handleSelectDay(day) : null}
+                        title={day ? `${months[currentDate.getMonth()]} ${day}` : ""}
+                    >
+                        {day}
                     </div>
-                </>
-            )}
+                ))}
+            </div>
+
+            <button className="today-button" onClick={returnToToday}>
+                Today
+            </button>
         </div>
     );
 };
