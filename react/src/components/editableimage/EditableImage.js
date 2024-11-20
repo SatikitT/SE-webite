@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '../../api';
 
-const EditableImage = ({ imageTag, imgStyle }) => {
-    const [imageSrc, setImageSrc] = useState('');
-    const [hovered, setHovered] = useState(false);
-    
+const EditableMedia = ({ mediaTag, mediaStyle}) => {
+    const [mediaSrc, setMediaSrc] = useState('');
+    const [mediaType, setMediaType] = useState('image');
+
     useEffect(() => {
-        const fetchImage = async () => {
+        const fetchMedia = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/get-image?tag=${imageTag}`);
-                console.log(response);
+                const encodedTag = encodeURIComponent(mediaTag);
+                const response = await axios.get(`${API_BASE_URL}/get-image?tag=${encodedTag}`);
                 if (response.data.image_url) {
-                    setImageSrc(response.data.image_url);
+                    const url = response.data.image_url;
+                    setMediaSrc(url);
+                    setMediaType(url.endsWith('.mp4') || url.endsWith('.webm') ? 'video' : 'image');
                 } else if (response.data.image_data) {
                     const byteCharacters = atob(response.data.image_data);
                     const byteNumbers = new Array(byteCharacters.length);
@@ -20,96 +22,38 @@ const EditableImage = ({ imageTag, imgStyle }) => {
                         byteNumbers[i] = byteCharacters.charCodeAt(i);
                     }
                     const byteArray = new Uint8Array(byteNumbers);
-                    const blob = new Blob([byteArray], { type: 'image/png' }); 
-                    const imageUrl = URL.createObjectURL(blob);
-                    setImageSrc(imageUrl);
+                    const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+                    const mediaUrl = URL.createObjectURL(blob);
+
+                    setMediaSrc(mediaUrl);
+                    setMediaType(response.data.image_data.startsWith('AAAAIGZ0') ? 'video' : 'image');
                 }
             } catch (error) {
-                console.error("Error fetching image:", error);
+                console.error("Error fetching media:", error);
             }
         };
-    
-        fetchImage();
-    }, [imageTag]);
 
-    const handleImageChange = async () => {
-        const newUrl = prompt('Enter the new image URL or leave empty to upload a file:');
-        let formData = new FormData();
-    
-        console.log(newUrl);
-        formData.append('tag', imageTag);
-    
-        if (newUrl) {
-            
-            formData.append('image_url', newUrl);
-            try {
-                
-                const response = await axios.post(`${API_BASE_URL}/update-image`, formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                });
-                console.log("Image updated response:", response.data);
-                setImageSrc(newUrl);  
-            } catch (error) {
-                console.error("Error updating image:", error.response?.data || error);
-            }
-        } else if (newUrl == "") {
-            
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = 'image/*'; 
-            fileInput.onchange = async () => {
-                const file = fileInput.files[0]; 
-                if (file) {
-                    formData.append('file', file); 
-                    try {
-                        const response = await axios.post(`${API_BASE_URL}/update-image`, formData, {
-                            headers: { 'Content-Type': 'multipart/form-data' },
-                        });
-                        console.log("Image updated response:", response.data);
-                        setImageSrc(URL.createObjectURL(file));
-                    } catch (error) {
-                        console.error("Error updating image:", error.response?.data || error);
-                    }
-                }
-            };
-            fileInput.click(); 
-        }
-    };
+        fetchMedia();
+    }, [mediaTag]);
 
-    const defaultImgStyle = {
+    const defaultMediaStyle = {
         height: 'auto',
         width: '100%',
         objectFit: 'cover',
         display: 'block',
     };
-    
-    const combinedStyles = { ...defaultImgStyle, ...imgStyle }; 
+
+    const combinedStyles = { ...defaultMediaStyle, ...mediaStyle };
 
     return (
-        <div
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            style={{ position: 'relative' }}
-        >
-            <img src={imageSrc} alt="Editable" style={combinedStyles} />
-            {hovered && (
-                <button
-                    onClick={handleImageChange}
-                    style={{
-                        position: 'absolute',
-                        top: '80px',
-                        right: '10px',
-                        padding: '6px',
-                        backgroundColor: 'white',
-                        border: 'none',
-                        cursor: 'pointer',
-                    }}
-                >
-                    Change Image
-                </button>
+        <div>
+            {mediaType === 'video' ? (
+                <video src={mediaSrc} style={combinedStyles} autoPlay loop muted />
+            ) : (
+                <img src={mediaSrc} alt="Editable" style={combinedStyles} />
             )}
         </div>
     );
 };
 
-export default EditableImage;
+export default EditableMedia;

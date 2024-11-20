@@ -1,0 +1,147 @@
+
+
+/* Wrapper for the entire page */
+.software-page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin-top: 20px;
+}
+
+/* Container for the main content */
+.software-page-container {
+    padding-top: 20px; /* Changed padding to fixed value */
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Section sty  ling */
+.section-Software {
+    width: 100%;
+    max-width: 1200px; /* Set a fixed max-width */
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    
+    margin-bottom: 30px;
+}
+
+/* Image container styling */
+.curriculum-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+/* Image styling */
+.curriculum-image img {
+    max-width: 100%; /* Adjusts the image size to fit within the container */
+    border-radius: 8px;
+}
+
+/* Year section styling */
+.year-section {
+    margin: 20px 0;
+}
+
+/* Specializations list styling */
+.specializations-list {
+    list-style: none;
+    padding-left: 20px;
+}
+
+.specializations-list li {
+    margin-bottom: 10px;
+}
+
+/* Course section styling */
+.course-section {
+    margin: 30px 0;
+}
+
+/* Course card styling */
+.course-card {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.course-card h4 {
+    margin: 0 0 10px;
+}
+
+.course-card p {
+    margin: 0;
+}
+
+.software-page-wrapper h1, h2, h3, h4 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+p, li {
+    color: #555;
+    line-height: 1.6;
+
+}
+
+/* Image container padding */
+.image-container {
+    margin: 20px 0; /* Replaced padding-top with margin */
+    
+}
+
+/* Year navigation button container */
+.year-navigation {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+/* Year button styling */
+.year-button {
+    background-color: lightblue;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.year-button:hover {
+    background-color: lightblue;
+}
+
+.year-button.active {
+    background-color: #4caf50; /* Change color for active year */
+    color: white;
+    font-weight: bold;
+}
+
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .section {
+        padding: 15px;
+    }
+
+@media (max-width: 768px) {
+    .image-container img {
+        width: 80vh;
+        height: 45vh;
+    }
+}
+    .course-card {
+        padding: 10px;
+    }
+}

@@ -1,36 +1,98 @@
-footer {
+/* General Footer Styling */
+.footer {
+    background-color: #1d1d1d;
+    color: #ffffff; /* White text for the entire footer */
+    font-family: 'Trebuchet MS', sans-serif;
+    padding-bottom: 20px;
+    
+}
+
+/* Top Section */
+.footer-top {
+    background-color: #252222;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1200px;
     width: 100%;
-    background-color: #2d2926;
-    color: white;
-    text-align: center;
-    position: relative; /* Change from fixed to relative */
-    z-index: 1;
-
+    gap: 20px;
+    justify-content: space-between;
+    z-index: 1000;
 }
 
-.footer-top{
-    padding: 30px 0;
-    background-color: #2d2926;
+/* Columns */
+.footer-col {
+    flex: 1 1 300px;
+    padding: 20px;
 }
 
-.footer-top-container{
-    padding: 0 50px;
+.footer-logo {
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.footer-heading {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #e2e2e2; /* Ensure white color for headings */
+}
+
+/* Social Media Links */
+.footer-socials {
     display: flex;
-    flex-direction: row;
+    gap: 10px;
 }
 
-.footer-top-container-col{
-    text-align: left;
-    padding: 0 50px;
-    color: white;
-    display: flex;
-    flex-direction: column;
+.footer-social-icon {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.2s;
 }
 
-.footer-bottom{
-    padding: 30px 0;
+.footer-social-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Contact List */
+.footer-contact-list {
+    list-style: none;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.footer-contact-list li {
+    margin-bottom: 10px;
+    color: #e6e6e6; /* White text for contact list items */
+}
+
+.footer-contact-link {
+    color: #a3f184; /* White text for links */
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.footer-contact-link:hover {
+    opacity: 0.8; /* Slight dimming effect on hover */
+}
+
+/* Map Container Styling */
+.footer iframe {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+}
+
+/* Bottom Section */
+.footer-bottom {
     text-align: center;
-    color: white;
-    background-color: #22201f;
-    font-size: 12px;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #ffffff; /* White text for footer bottom */
 }

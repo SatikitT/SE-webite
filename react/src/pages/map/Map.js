@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as BABYLON from "@babylonjs/core";
-import UsePreventZoom from './UsePreventZoom'
 import "@babylonjs/loaders/glTF";
 
 const Map = () => {
@@ -8,8 +7,6 @@ const Map = () => {
     const [hoverInfo, setHoverInfo] = useState([]);
     const [sceneMeshes, setSceneMeshes] = useState([]);
     var ms = [];
-
-    UsePreventZoom();
 
     useEffect(() => {
         const canvas = canvasRef.current;

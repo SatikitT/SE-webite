@@ -1,0 +1,104 @@
+/* Modal container that controls visibility */
+.model {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding-top: 10%;
+    padding-left: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Background overlay */
+.backgroundOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 999; /* Background behind the modal */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Modal content container */
+.modelMain {
+    position: relative; 
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 80%;
+    max-width: 80vh; 
+    height: 50vh;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    z-index: 1001; /* Ensure it appears above background */
+}
+
+/* Modal content: Flex container for image and info */
+.modelContent {
+    display: flex; /* Flexbox for the two sections */
+    justify-content: flex-start;
+    align-items: center; /* Center align vertically */
+    gap: 30px; /* Space between image and info */
+}
+
+/* Left section: Image */
+.modalImage {
+    flex: 0 0 25%; /* Fixed width: 25% of the modal */
+    height: 50%; /* Fixed height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalImage img {
+    width: 200px; /* Set image width */
+    height: auto;
+    border-radius: 10px; /* Optional: rounded corners */
+}
+
+/* Right section: Info */
+.modelInfo {
+    flex: 2; /* Take up 2 parts of the width */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Text styling for the content */
+.modalInfo h2 {
+    margin-bottom: 10px;
+}
+
+/* Display classes to control modal visibility */
+.displayBlock {
+    display: block;
+}
+
+.displayNone {
+    display: none;
+}
+
+/* Close button styles */
+.modelCloseTopRight {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background-color: transparent;
+    color: #f44336;
+    border: none;
+    font-size: 24px; /* Increase the size of the 'X' */
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modelCloseTopRight:hover {
+    color: #d32f2f;
+}

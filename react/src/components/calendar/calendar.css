@@ -11,8 +11,39 @@ h1 {
 
 .calendar-header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
+}
+
+.back-button {
+    align-self: flex-start;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+
+.date-header {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.right-buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
 .calendar-weekdays {

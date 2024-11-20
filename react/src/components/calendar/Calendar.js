@@ -4,16 +4,12 @@ import "./calendar.css";
 const Calendar = ({ searchParams, onDateChange }) => {
     const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const months = [
-        "January", "February", "March", "April", "May", "June", 
+        "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
 
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDay, setSelectedDay] = useState(null);
-
-    useEffect(() => {
-        setSelectedDay(currentDate.getDate());
-    }, [currentDate]);
 
     useEffect(() => {
         if (selectedDay) {
@@ -29,7 +25,6 @@ const Calendar = ({ searchParams, onDateChange }) => {
             }
         }
     }, [selectedDay, currentDate, searchParams.date, onDateChange]);
-    
 
     const handleSelectDay = (day) => {
         setSelectedDay(day);
@@ -41,6 +36,11 @@ const Calendar = ({ searchParams, onDateChange }) => {
         setSelectedDay(today.getDate());
     };
 
+    const unselectDay = () => {
+        setSelectedDay(null);
+        onDateChange(null);
+    };
+
     const getDaysInMonth = (year, month) => {
         return new Date(year, month + 1, 0).getDate();
     };
@@ -49,6 +49,25 @@ const Calendar = ({ searchParams, onDateChange }) => {
         const newDate = new Date(currentDate);
         newDate.setMonth(currentDate.getMonth() + direction);
         setCurrentDate(newDate);
+    };
+
+    const changeDay = (direction) => {
+        const daysInMonth = getDaysInMonth(currentDate.getFullYear(), currentDate.getMonth());
+        const newDay = selectedDay + direction;
+
+        if (newDay < 1) {
+            const prevMonth = new Date(currentDate);
+            prevMonth.setMonth(currentDate.getMonth() - 1);
+            setCurrentDate(prevMonth);
+            setSelectedDay(getDaysInMonth(prevMonth.getFullYear(), prevMonth.getMonth()));
+        } else if (newDay > daysInMonth) {
+            const nextMonth = new Date(currentDate);
+            nextMonth.setMonth(currentDate.getMonth() + 1);
+            setCurrentDate(nextMonth);
+            setSelectedDay(1);
+        } else {
+            setSelectedDay(newDay);
+        }
     };
 
     const generateCalendarDays = () => {
@@ -73,29 +92,61 @@ const Calendar = ({ searchParams, onDateChange }) => {
     return (
         <div className="calendar-container">
             <div className="calendar-header">
-                <button onClick={() => changeMonth(-1)}>{"<"}</button>
-                <h3 style={{position: 'relative', marginRight: '-15%'}}>{`${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`}</h3>
-                <button onClick={() => returnToToday()} style={{position: 'relative', marginRight: '-30%'}}>Today</button>
-                <button onClick={() => changeMonth(1)}>{">"}</button>
+                {selectedDay && (
+                    <button className="back-button" onClick={unselectDay}>
+                        Back
+                    </button>
+                )}
+                <div className="header-controls">
+                    {!selectedDay ? (
+                        <>
+                            <button className="prev-button" onClick={() => changeMonth(-1)}>{"<"}</button>
+                            <h3 className="date-header">
+                                {`${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`}
+                            </h3>
+                            <div className="right-buttons">
+                                <button className="today-button" onClick={returnToToday}>Today</button>
+                                <button className="next-button" onClick={() => changeMonth(1)}>{">"}</button>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <button className="prev-button" onClick={() => changeDay(-1)}>{"<"}</button>
+                            <h3 className="date-header">
+                                {`${selectedDay} ${months[currentDate.getMonth()]}`}
+                            </h3>
+                            <div className="right-buttons">
+                                <button className="today-button" onClick={returnToToday}>Today</button>
+                                <button className="next-button" onClick={() => changeDay(1)}>{">"}</button>
+                            </div>
+                        </>
+                    )}
+                </div>
+
             </div>
-            <div className="calendar-weekdays">
-                {weekdays.map((day, index) => (
-                    <div key={index} className="weekday">
-                        {day}
+
+            {!selectedDay && (
+                <>
+                    <div className="calendar-weekdays">
+                        {weekdays.map((day, index) => (
+                            <div key={index} className="weekday">
+                                {day}
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
-            <div className="calendar-days">
-                {calendarDays.map((day, index) => (
-                    <div
-                        key={index}
-                        className={`calendar-day ${ day ? (day === selectedDay ? "selected" : "") : "empty-day" }`}
-                        onClick={() => handleSelectDay(day)}
-                    >
-                        {day}
+                    <div className="calendar-days">
+                        {calendarDays.map((day, index) => (
+                            <div
+                                key={index}
+                                className={`calendar-day ${day ? (day === selectedDay ? "selected" : "") : "empty-day"}`}
+                                onClick={() => handleSelectDay(day)}
+                            >
+                                {day}
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
+                </>
+            )}
         </div>
     );
 };

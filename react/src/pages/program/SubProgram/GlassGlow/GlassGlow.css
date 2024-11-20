@@ -1,0 +1,106 @@
+
+/* Wrapper for the entire page */
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Full viewport height */
+}
+
+/* Header and Footer do not require additional styles as long as they are above and below the content */
+
+/* Page container for the main content */
+.page-container-Glass {
+    
+    flex: 1; /* Flex-grow to fill the remaining space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+}
+
+/* Content section styling */
+.section-Glass {
+    width: 100%;
+    max-width: 1200px; /* Control maximum width */
+    min-height: 180vh;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Soft shadow for better contrast */
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Make the section take full height without overflow */
+.section-content {
+    width: 100%;
+    min-height: 80vh; /* Ensure it fills most of the viewport height */
+}
+
+/* Image styling */
+.uq-logo {
+    width: 100%;
+    max-width: 400px; /* Constrain the image size */
+    height: auto;
+    margin: 0px 0;
+}
+
+/* Content container inside the section */
+.content-container {
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align content to the left */
+}
+
+/* Headings */
+.page-wrapper h1, h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Paragraph and list item styling */
+.page-wrapper p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.page-wrapper ul {
+    margin: 0;
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+.page-wrapper ul li {
+    color: #555;
+    line-height: 1.4;
+}
+
+.page-wrapper strong {
+    font-weight: bold;
+}
+
+/* Responsive styling for smaller screens */
+@media (max-width: 768px) {
+    .section {
+        padding: 15px;
+        min-height: 220vh;
+
+    }
+
+    .content-container {
+        padding: 15px;
+        text-align: center; 
+    }
+
+    .uq-logo {
+        width: 100%; 
+        max-width: 100%; 
+    }
+
+}

@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { API_BASE_URL } from '../api';
-import UsePreventZoom from './UsePreventZoom'
-import './Forum.css'
-import '../App.css'
+import { API_BASE_URL } from '../../api';
+import './forum.css'
 
 const Forum = () => {
   const [posts, setPosts] = useState([]);

@@ -1,74 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import './NewsPage.css';
-
-const newsItems = [
-    {   
-        title: "EVOLVING VOLUMES",
-        date: "20 SEP 2024",
-        description: "DISCOVER MORE",
-        imgUrl: "https://s1.significados.com/foto/software-og.jpg",
-        link: "#", // Placeholder link
-    },
-    {
-        title: "YOUNG AND FAST",
-        date: "20 SEP 2024",
-        description: "DISCOVER MORE",
-        imgUrl: "https://s1.significados.com/foto/software-og.jpg",
-        link: "#", // Placeholder link
-    },
-    {
-        title: "IMOLA, 15 - 21 OCTOBER",
-        date: "20 SEP 2024",
-        description: "DISCOVER MORE",
-        imgUrl: "https://s1.significados.com/foto/software-og.jpg",
-        link: "#", // Placeholder link
-    },
-    {
-        title: "PRE-OWNED",
-        date: "20 SEP 2024",
-        description: "DISCOVER MORE",
-        imgUrl: "https://s1.significados.com/foto/software-og.jpg",
-        link: "#", // Placeholder link
-    },
-    {
-        title: "ONE OF A KIND",
-        date: "20 SEP 2024",
-        description: "DISCOVER MORE",
-        imgUrl: "https://s1.significados.com/foto/software-og.jpg",
-        link: "#", // Placeholder link
-    },
-    {
-        title: "PAST MODELS",
-        date: "20 SEP 2024",
-        description: "DISCOVER MORE",
-        imgUrl: "https://s1.significados.com/foto/software-og.jpg",
-        link: "#", // Placeholder link
-    },
-    {
-        title: "PAST MODELS",
-        date: "20 SEP 2024",
-        description: "DISCOVER MORE",
-        imgUrl: "https://s1.significados.com/foto/software-og.jpg",
-        link: "#", // Placeholder link
-    },
-    {
-        title: "PAST MODELS",
-        date: "20 SEP 2024",
-        description: "DISCOVER MORE",
-        imgUrl: "https://s1.significados.com/foto/software-og.jpg",
-        link: "#", // Placeholder link
-    },
-];
+import axios from 'axios';
+import { API_BASE_URL } from '../../../api';
+import EditableMedia from '../../../components/editableimage/EditableImage';
 
 const NewsPage = () => {
+    const [newsItems, setNewsItems] = useState([]);
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
+        const fetchNews = async () => {
+            try {
+                const response = await axios.get(`${API_BASE_URL}/items/`);
+                const filteredNews = response.data
+                    .filter((item) => item.type === 'news')
+                    .slice(-8) 
+                    .reverse();
+                setNewsItems(filteredNews);
+            } catch (error) {
+                console.error('Error fetching news:', error);
+            }
+        };
+
+        fetchNews();
+    }, []);
+
+    useEffect(() => {
         const handleScroll = () => {
-            const newsPagePosition = document.querySelector('.news-page').offsetTop;
+            const newsPageElement = document.querySelector('.news-page');
+            if (!newsPageElement) return; // Skip execution if the element doesn't exist
+
+            const newsPagePosition = newsPageElement.offsetTop;
             const scrollPosition = window.scrollY + window.innerHeight;
 
-            // Check if the scroll has reached the "news-page" element
             if (scrollPosition > newsPagePosition) {
                 setIsVisible(true);
             } else {
@@ -83,23 +47,29 @@ const NewsPage = () => {
         };
     }, []);
 
+
+    if (newsItems.length === 0) {
+        return <div>Loading news...</div>;
+    }
+
     return (
         <div className={`news-page ${isVisible ? 'show' : ''}`}>
-            {newsItems.map((item, index) => (
-                <div className="news-item" key={index}>
-                    {/* Wrap image in anchor tag */}
-                    <a href={item.link}>
-                        <img src={item.imgUrl} alt={item.title} />
-                    </a>
-                    <div className="news-text">
-                        <h3>{item.date}</h3>
-                        <h2>{item.title}</h2>
-                        <a href={item.link}>
-                            <p>{item.description}</p>
+            <h2 className="section-title">News and Activity</h2>
+            <div className="news-grid">
+                {newsItems.map((item, index) => (
+                    <div className="news-item" key={index}>
+                        <a href={item.link || '#'}>
+                            <EditableMedia mediaTag={item.title}/>
                         </a>
+                        <div className="news-text">
+                            <h2>{item.title}</h2>
+                            <a href={item.link || '#'} className="news-link">
+                                <p>{item.description || 'Read More'}</p>
+                            </a>
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
     );
 };

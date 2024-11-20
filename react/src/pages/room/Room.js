@@ -14,7 +14,7 @@ const CoopRoom = ({ username }) => {
     const [selectedRoom, setSelectedRoom] = useState(null);
     const [reservedSlots, setReservedSlots] = useState([]);
     const [searchParams, setSearchParams] = useState({
-        date: new Date().toISOString().split("T")[0],
+        date: null,
     });
 
     const fetchReservations = async (roomNumber, date) => {
@@ -61,6 +61,7 @@ const CoopRoom = ({ username }) => {
     
 
     useEffect(() => {
+        console.log(searchParams);
         if (selectedRoom && searchParams.date) {
             fetchReservations(selectedRoom, searchParams.date);
         }
@@ -68,8 +69,14 @@ const CoopRoom = ({ username }) => {
     
 
     const handleDateChange = (date) => {
-        setSearchParams((prev) => ({ ...prev, date }));
+        if (date) {
+            setSearchParams((prev) => ({ ...prev, date }));
+        } else {
+            setSearchParams((prev) => ({ ...prev, date: null }));
+            setReservedSlots([]);
+        }
     };
+    
     
     const handleRoomSelect = (room) => {
         setSelectedRoom(room.name.substr(4));
@@ -152,8 +159,12 @@ const CoopRoom = ({ username }) => {
             >
                 <h1>{selectedRoom ? `Room ${selectedRoom}` : ""}</h1>
                 <Calendar onDateChange={handleDateChange} searchParams={searchParams} />
-                <div style={{ height: "40px" }}></div>
-                <Timetable reservedSlots={reservedSlots} onReserve={handleReserve} />
+                <Timetable 
+                    reservedSlots={reservedSlots} 
+                    onReserve={handleReserve} 
+                    date={searchParams.date}
+                />
+
             </div>
         </div>
     );

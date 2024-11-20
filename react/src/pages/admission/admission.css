@@ -1,0 +1,114 @@
+.admission-container {
+  max-width: 900px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.yellow-line{
+  border-bottom: 2px solid #e6aa2a;
+}
+
+.admission-container h1,h2 {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-weight: 600;
+  color: #423224;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+.admission-container h3,h4 {
+  color: #5f9e2b;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+/* Paragraph and lists styling */
+.admission-container p {
+  margin-bottom: 15px;
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+.admission-container ul {
+  list-style-type: disc;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.admission-container li {
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+/*   
+  strong {
+    color: #2c3e50;
+    font-weight: 600;
+  }
+   */
+
+/* Section padding */
+.admission-container section {
+  margin-bottom: 40px;
+}
+
+/* Button styling (optional) */
+.admission-container button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #2980b9;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.admission-container button:hover {
+  background-color: #1a73a3;
+}
+
+.apply-link {
+  display: inline-block;
+  padding: 12px 20px;
+  color: white;
+  background-color: #2980b9;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.apply-link:hover {
+  background-color: #1c5980;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admission-container {
+    padding: 10px;
+    margin: 20px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  p,
+  li {
+    font-size: 14px;
+  }
+
+  button {
+    width: 100%;
+  }
+}

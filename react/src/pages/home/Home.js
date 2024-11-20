@@ -5,10 +5,10 @@ import './img-slider/slider.js'
 import Footer from '../../components/footer/Footer.js';
 import News from './img-slider/NewSPage.js'
 import Slider from './img-slider/slider.js';
-import EditableImage from '../../components/editableimage/EditableImage.js';
+import EditableMedia from '../../components/editableimage/EditableImage.js';
 import { Link } from 'react-router-dom';
 
-const Home = () => {
+const Home = ({isAdmin}) => {
 
     const imgStyles = {
         height: '100vh'
@@ -17,7 +17,7 @@ const Home = () => {
     return (
         <>
             <div className="page-container">
-                <EditableImage imageTag={"mainpage"} imgStyle={imgStyles} />
+                <EditableMedia mediaTag={"mainpage"} mediaStyle={imgStyles}/>
 
                 <div className="text-over1">
                     <div>
@@ -30,7 +30,8 @@ const Home = () => {
                     </div>
                 </div>
 
-                <div className='section' style={{ backgroundColor: 'white' }}>
+        
+                <div className='section' style={{ backgroundColor: 'white', display: 'flex', flexDirection: 'column' }}>
                     <Slider />
                 </div>
 

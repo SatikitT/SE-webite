@@ -78,6 +78,12 @@ function Header() {
                             <Link to="/map">Map</Link>
                         </li>
                         <li className='navs-button'>
+                            <Link to="/program">Program</Link>
+                        </li>
+                        <li className='navs-button'>
+                            <Link to="/admission">Admission</Link>
+                        </li>
+                        <li className='navs-button'>
                             <Link to="/about">About</Link>
                         </li>
                     </ul>

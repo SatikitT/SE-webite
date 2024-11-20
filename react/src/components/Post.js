@@ -1,4 +1,3 @@
-// src/components/Post.js
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -57,6 +56,7 @@ const Post = () => {
 
   return (
     <>
+          <div style={{ display: "flex", marginTop: "7.5vh"}}></div>
       <h1>{post.title}</h1>
 
       <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />

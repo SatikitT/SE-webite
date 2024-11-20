@@ -1,51 +1,36 @@
 import React, { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
+import { API_BASE_URL } from '../../../api';
+import EditableMedia from '../../../components/editableimage/EditableImage';
 import './slider.css';
 
 const Slider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [slides, setSlides] = useState([]); // State to hold the filtered awards
   const intervalRef = useRef(null);
 
-  const slides = [
-    {
-      imgSrc: 'https://techcrunch.com/wp-content/uploads/2024/11/techcrunch-disrupt-2024-open-source-panel.jpg?resize=1200,800',
-      title: 'How to make open source software more secure',
-      text: 'Earlier this year, a Microsoft developer realized that someone had inserted a backdoor into the code of open source utility XZ Utils, which is used in virtually all Linux operating systems.',
-    },
-    {
-      imgSrc: 'https://analyticsindiamag.com/wp-content/uploads/2024/11/Using-AI-to-Build-AI-is-Questionable.jpg.webp',
-      title: 'AI is Coding AI—Should Software Engineers Be Worried?',
-      text: 'A recent GitHub survey found that 97% of developers use AI coding tools, and the use cases vary from project to project.',
-    },
-    {
-      imgSrc: 'https://www.simplilearn.com/ice9/free_resources_article_thumb/software_engineer_salaryus.jpg',
-      title: 'Software Engineer Salaries in the US: An Ultimate Guide',
-      text: 'Software engineering is a highly versatile job worldwide. It pays well, so it’s no wonder many people are pursuing this career. The demand for skilled and professional software engineers is still rising.',
-    },
-    {
-      imgSrc: 'https://c.ndtvimg.com/2024-03/20jnau7g_google_625x300_14_March_24.jpg?im=FeatureCrop,algorithm=dnn,width=773,height=435',
-      title: 'Google Software Engineering Internship For PhD Students: Check Eligibility, Duration, And More',
-      text: 'This is a paid internship lasting 12-14 weeks, providing opportunities for personal growth, professional skill-building, talks from company leaders.',
-    },
-  ];
+  const fetchAwards = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/items/`); // Replace with the actual endpoint
+      const awards = response.data
+        .filter((award) => award.type === 'award') // Filter for award type
+        .slice(-4) // Get the last 4 awards
+        .reverse(); // Reverse to display the most recent first
+      setSlides(awards);
+    } catch (error) {
+      console.error('Error fetching awards:', error);
+    }
+  };
 
   useEffect(() => {
-    // const startAutoSlide = () => {
-    //   if (intervalRef.current) {
-    //     clearInterval(intervalRef.current);
-    //   }
-    //   intervalRef.current = setInterval(() => {
-    //     setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-    //   }, 3000);
-    // };
-
-    //startAutoSlide();
+    fetchAwards();
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [slides.length]);
+  }, []);
 
   const resetSlideInterval = () => {
     if (intervalRef.current) {
@@ -73,49 +58,44 @@ const Slider = () => {
 
   return (
     <div className="slider">
-      <div className="slider-wrapper" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
-        {slides.map((slide, index) => (
-          <div className="slide" key={index}>
-            <div className="slide-content">
-              <div className="slide-title">{slide.title}</div>
-              <div className="slide-text">{slide.text}</div>
-              <div className="read-more">
-                <span>READ MORE</span>
-                <span className="arrow-icon"> &#8250; </span>
+      {slides.length > 0 ? (
+        <>
+          <div className="slider-wrapper" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+            {slides.map((slide, index) => (
+              <div className="slide" key={index}>
+                <div className="slide-content">
+                  <div className="slide-title">{slide.title}</div>
+                  <div className="slide-text">{slide.detail}</div>
+                </div>
+                <div className="slide-image">
+                  <EditableMedia mediaTag={slide.title} mediaStyle={{ width: '80%', height: 'auto', objectFit: 'cover', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }} />
+                </div>
               </div>
-            </div>
-            <div className="slide-image">
-              <img src={slide.imgSrc} alt={`Slide ${index + 1}`} />
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      {/* Navigation Arrows */}
-      <div className="arrows">
-        <button className="arrow prev" onClick={prevSlide}>
-          &#10094;
-        </button>
-        <button className="arrow next" onClick={nextSlide}>
-          &#10095;
-        </button>
-      </div>
+          <div className="arrows">
+            <button className="arrow prev" onClick={prevSlide}>
+              &#10094;
+            </button>
+            <button className="arrow next" onClick={nextSlide}>
+              &#10095;
+            </button>
+          </div>
 
-      {/* Dots Navigation */}
-      <div className="dots">
-        {slides.map((_, index) => (
-          <div
-            key={index}
-            className={`dot ${index === currentSlide ? 'active' : ''}`}
-            onClick={() => selectSlide(index)}
-          />
-        ))}
-      </div>
-
-      {/* View All News Button */}
-      <div className="view-all-news">
-        <a href="#">VIEW ALL NEWS</a>
-      </div>
+          <div className="dots">
+            {slides.map((_, index) => (
+              <div
+                key={index}
+                className={`dot ${index === currentSlide ? 'active' : ''}`}
+                onClick={() => selectSlide(index)}
+              />
+            ))}
+          </div>
+        </>
+      ) : (
+        <p>Loading awards...</p>
+      )}
     </div>
   );
 };

@@ -1,0 +1,142 @@
+.Detail-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+    margin-bottom: 2%;
+    min-height: 100vh; /* Ensures full height */
+    /* z-index: 1; */
+}
+
+.question-detail {
+    width: 600px;
+    background-color: #fff;
+    padding: 50px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.question-detail h2 {
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: none;
+
+}
+
+.question-detail h1 {
+    font-weight: bold;
+    border-bottom: none;
+
+}
+
+.posted-by {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.question-body {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 400px;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
+.add-image-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.add-image-button:hover {
+    background-color: #0056b3;
+}
+
+.PostDetail-container hr {
+    margin: 20px 0;
+    border: 0;
+    height: 1px;
+    background-color: #ddd;
+    border-bottom: none;
+}
+
+h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    
+}
+
+.comments-section {
+    margin-bottom: 20px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.comment {
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+}
+
+.comment:first-child {
+    border-top: none;
+}
+
+.comment-username {
+    font-weight: bold;
+    color: green;
+    margin-bottom: 5px;
+}
+
+.comment-text {
+    color: #333;
+}
+
+.add-comment {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.add-comment textarea {
+    width: 100%;
+    height: 60px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: none;
+    font-size: 14px;
+}
+
+.add-comment-button {
+    align-self: flex-start;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.add-comment-button:hover {
+    background-color: #0056b3;
+}
+
+

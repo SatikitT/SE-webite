@@ -32,7 +32,7 @@ const AddPost = ({ username }) => {
 
   useEffect(() => {
     const quill = new Quill(editorRef.current, {
-      theme: 'snow', // Theme
+      theme: 'snow',
       modules: {
         toolbar: [
           ['bold', 'italic', 'underline', 'strike'],
@@ -66,6 +66,7 @@ const AddPost = ({ username }) => {
 
   return (
     <>
+      <div style={{ display: "flex", marginTop: "7.5vh"}}></div>
       <h1>Add Post</h1>
       <form onSubmit={handleSubmit}>
         <div>
