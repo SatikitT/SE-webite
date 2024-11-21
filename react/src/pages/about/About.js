@@ -1,33 +1,44 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Modal from './model/model.js'; // Correct capitalization of Modal
 import aboutstyle from './about-page.module.css';
 import Footer from '../../components/footer/Footer.js';
-
-const teamData = {
-  head: {
-    name: "Dr. Someone",
-    position: "Head of Software Engineering",
-    email: "johndoe@example.com",
-    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdAKajl852Eo3K0K6q-pZtA7Dy8vGJdaip5w&s",
-    description: "Someone has over 20 years of experience in software engineering. He specializes in software architecture and large-scale systems design."
-  },
-  lecturers: [
-    { name: "Lecturer 1", position: "Lecturer", email: "lecturer1@example.com", img: "https://images.javatpoint.com/top10-technologies/images/top-10-hollywood-actors9.png", description: "Lecturer 1 is a specialist in machine learning and artificial intelligence." },
-    { name: "Lecturer 2", position: "Lecturer", email: "lecturer2@example.com", img: "https://e0.pxfuel.com/wallpapers/456/64/desktop-wallpaper-ryan-reynolds-hollywood-handsome-actor-thumbnail.jpg", description: "Lecturer 2 focuses on software testing and quality assurance." },
-    { name: "Lecturer 3", position: "Lecturer", email: "lecturer3@example.com", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaUm7ZiNC6meeuBChMoOs3Fs1cnBzvG7B4ZA&s", description: "Lecturer 3's research involves cloud computing and distributed systems." },
-    { name: "Lecturer 4", position: "Lecturer", email: "lecturer4@example.com", img: "https://m.media-amazon.com/images/M/MV5BMjA2ODY1MDA5MV5BMl5BanBnXkFtZTcwNjU1MzIyOA@@._V1_FMjpg_UX1000_.jpg", description: "Lecturer 4 teaches software design and architecture." },
-    { name: "Lecturer 5", position: "Lecturer", email: "lecturer5@example.com", img: "https://cdn.britannica.com/58/222658-050-6D713DFB/American-singer-songwriter-dancer-Michael-Jackson-1979.jpg", description: "Lecturer 5 is an expert in software engineering processes and methodologies." },
-    { name: "Lecturer 6", position: "Lecturer", email: "lecturer6@example.com", img: "https://i.guim.co.uk/img/media/51d065103948208e35132ca541ca95b84f10043b/0_129_3000_1800/master/3000.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=483912c2611fd243fb81b631c82272be", description: "Lecturer 6 has published multiple research papers on human-computer interaction." }
-  ],
-  staff: [
-    { name: "Staff 1", position: "Staff", email: "staff1@example.com", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRm55gLJyU6NJDghS-NwBVSc_mec47F9GFhmQ&s", description: "Staff 1 is responsible for administrative tasks and student support." },
-    { name: "Staff 2", position: "Staff", email: "staff2@example.com", img: "https://media.istockphoto.com/id/1080176010/photo/professional-cleaners-during-the-work-indoors.jpg?s=612x612&w=0&k=20&c=989dJfostrhjevvm6uoSb4FruvbBH5g54l3xbnntf9I=", description: "Staff 2 manages technical support and departmental resources." }
-  ]
-};
+import { API_BASE_URL } from '../../api';
+import EditableMedia from '../../components/editableimage/EditableImage.js';
 
 const App = () => {
+  const [teamData, setTeamData] = useState({
+    head: null,
+    lecturers: [],
+    staff: []
+  });
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState({});
+
+  const fetchTeamData = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/staff/`); // Assuming `/staff/` returns all staff
+      const data = response.data;
+
+      // Organize staff by type
+      const head = data.find(member => member.role === 'Head') || null;
+      const lecturers = data.filter(member => member.role === 'Lecturer');
+      const staff = data.filter(member => member.role === 'Staff');
+
+      setTeamData({
+        head,
+        lecturers,
+        staff
+      });
+    } catch (error) {
+      console.error('Error fetching staff:', error.response?.data || error);
+      alert('Failed to fetch staff.');
+    }
+  };
+
+  useEffect(() => {
+    fetchTeamData();
+  }, []);
 
   // Modal handlers
   const handleOpenModal = (member) => {
@@ -116,29 +127,39 @@ const App = () => {
 
         <div className={aboutstyle.teamContainer}>
           <div className={aboutstyle.fadeDown}>
-            <div className={aboutstyle.leaderSection}>
-              <div className={aboutstyle.leaderMember}>
-                <h3>Head of Software Engineering</h3>
-                <img
-                  src={teamData.head.img}
-                  alt={teamData.head.name}
-                  onClick={() => handleOpenModal(teamData.head)}
-                  style={{ cursor: 'pointer' }}
-                />
+            {teamData.head && (
+              <div className={aboutstyle.leaderSection}>
+                <div className={aboutstyle.leaderMember} onClick={() => handleOpenModal(teamData.head)}>
+                  <h3>Head of Software Engineering</h3>
+                  <EditableMedia
+                      mediaTag={teamData.head.name}
+                      mediaStyle={{
+                        borderRadius: '10px',
+                        height: '20vh',
+                        width: '20vh',
+                        objectFit: 'cover',
+                        marginRight: '2vh'
+                      }}
+                    />
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <div className={aboutstyle.fadeDown}>
             <div className={aboutstyle.lecturerSection}>
               <h3>Lecturers</h3>
               <div className={aboutstyle.lecturerMembers}>
                 {teamData.lecturers.map((lecturer, index) => (
-                  <div className={aboutstyle.teamMember} key={index}>
-                    <img
-                      src={lecturer.img}
-                      alt={lecturer.name}
-                      onClick={() => handleOpenModal(lecturer)}
-                      style={{ cursor: 'pointer' }}
+                  <div className={aboutstyle.teamMember} key={index} onClick={() => handleOpenModal(lecturer)}>
+                    <EditableMedia
+                      mediaTag={lecturer.name}
+                      mediaStyle={{
+                        borderRadius: '10px',
+                        height: '20vh',
+                        width: '20vh',
+                        objectFit: 'cover',
+                        marginRight: '2vh'
+                      }}
                     />
                   </div>
                 ))}
@@ -147,15 +168,19 @@ const App = () => {
           </div>
           <div className={aboutstyle.fadeDown}>
             <div className={aboutstyle.staffSection}>
-              <h3 style={{ textAlign: 'center' }}>Staff member</h3>
+              <h3 style={{ textAlign: 'center' }}>Staff Members</h3>
               <div className={aboutstyle.staffMembers}>
                 {teamData.staff.map((staff, index) => (
-                  <div className={aboutstyle.teamMember} key={index}>
-                    <img
-                      src={staff.img}
-                      alt={staff.name}
-                      onClick={() => handleOpenModal(staff)}
-                      style={{ cursor: 'pointer' }}
+                  <div className={aboutstyle.teamMember} key={index} onClick={() => handleOpenModal(staff)}>
+                    <EditableMedia
+                      mediaTag={staff.name}
+                      mediaStyle={{
+                        borderRadius: '10px',
+                        height: '20vh',
+                        width: '20vh',
+                        objectFit: 'cover',
+                        marginRight: '2vh'
+                      }}
                     />
                   </div>
                 ))}
@@ -165,7 +190,6 @@ const App = () => {
         </div>
       </div>
 
-      {/* Modal Component */}
       <Modal show={showModal} handleClose={handleCloseModal} title={modalContent.name}>
         <div
           style={{
@@ -177,10 +201,9 @@ const App = () => {
             overflowY: 'auto'
           }}
         >
-          <img
-            src={modalContent.img}
-            alt={modalContent.name}
-            style={{
+          <EditableMedia
+            mediaTag={modalContent.name}
+            mediaStyle={{
               borderRadius: '10px',
               height: '20vh',
               width: '20vh',

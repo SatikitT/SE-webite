@@ -13,10 +13,12 @@ const Admin = () => {
     const [mediaUrl, setMediaUrl] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-    const [newItem, setNewItem] = useState({ title: '', detail: '', type: currentSection });
+    const [newItem, setNewItem] = useState({ title: '', detail: '', type: currentSection, date: '' });
     const [newImage, setNewImage] = useState({ imageUrl: '', file: null });
     const [rooms, setRooms] = useState([]);
     const [items, setItems] = useState([]);
+    const [newStaff, setNewStaff] = useState({ name: '', email: '', detail: '', role: '' });
+    const [staffList, setStaffList] = useState([]);
 
     useEffect(() => {
         if (currentSection === 'room-management') {
@@ -33,6 +35,12 @@ const Admin = () => {
         };
 
         loadItems();
+    }, [currentSection]);
+
+    useEffect(() => {
+        if (currentSection === 'about-page') {
+            fetchStaff();
+        }
     }, [currentSection]);
 
     const fetchRooms = async () => {
@@ -81,9 +89,13 @@ const Admin = () => {
         setNewItem({ title: '', detail: '', type: '' });
     };
 
-    const openEditModal = (item) => {
+    const openEditModal = async (item) => {
         setCurrentItem(item);
         setModalType("edit");
+
+        if (item.title) {
+            await fetchMedia(item.title);
+        }
     };
 
 
@@ -123,19 +135,30 @@ const Admin = () => {
     const handleAddItem = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${API_BASE_URL}/items/`, newItem);
+            // Check if day is missing and set it to today's date if needed
+            const itemToSubmit = {
+                ...newItem,
+                day: newItem.day || new Date().toISOString().split("T")[0], // Add today's date if `day` is not present
+            };
+
+            // Send the item to the API
+            const response = await axios.post(`${API_BASE_URL}/items/`, itemToSubmit);
+
+            // Update the state with the new item
             setItems((prevItems) => [...prevItems, response.data]);
             alert('Item added successfully!');
 
             // Upload the image using the item's title as the tag
-            await handleImageSubmit(newItem.title);
+            await handleImageSubmit(itemToSubmit.title);
 
+            // Close the modal
             closeAddModal();
         } catch (error) {
             console.error('Error adding item:', error.response?.data || error);
             alert('Failed to add item.');
         }
     };
+
 
     const handleImageSubmit = async (tag) => {
         const formData = new FormData();
@@ -146,7 +169,7 @@ const Admin = () => {
         } else if (newImage.file) {
             formData.append('file', newImage.file);
         } else {
-            return; // No image to upload
+            return;
         }
 
         try {
@@ -160,10 +183,16 @@ const Admin = () => {
         }
     };
 
+
     const handleEditItem = async (e) => {
         e.preventDefault();
         try {
-            const updatedItem = { title: currentItem.title, detail: currentItem.detail, type: currentSection };
+            const updatedItem = {
+                title: currentItem.title,
+                detail: currentItem.detail,
+                type: currentSection,
+                day: currentItem.day || '',
+            };
             await axios.put(`${API_BASE_URL}/items/${currentItem.id}/`, updatedItem);
 
             await handleImageSubmit(currentItem.title);
@@ -179,7 +208,33 @@ const Admin = () => {
         }
     };
 
+    const fetchMedia = async (mediaTag) => {
+        try {
+            const encodedTag = encodeURIComponent(mediaTag);
+            const response = await axios.get(`${API_BASE_URL}/get-image?tag=${encodedTag}`);
+            if (response.data.image_url) {
+                const url = response.data.image_url;
+                setNewImage({ imageUrl: url, file: null });
+            } else if (response.data.image_data) {
+                const byteCharacters = atob(response.data.image_data);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+                const mediaUrl = URL.createObjectURL(blob);
 
+                setNewImage({
+                    imageUrl: mediaUrl,
+                    file: null,
+                });
+            }
+            console.log(newImage);
+        } catch (error) {
+            console.error("Error fetching media:", error);
+        }
+    };
 
     const handleMediaSubmit = async (e) => {
         e.preventDefault();
@@ -205,6 +260,105 @@ const Admin = () => {
         } catch (error) {
             console.error('Error updating media:', error.response?.data || error);
             alert('Failed to update media.');
+        }
+    };
+
+    const fetchStaff = async () => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/staff/`);
+            setStaffList(response.data);
+        } catch (error) {
+            console.error('Error fetching staff:', error.response?.data || error);
+            alert('Failed to fetch staff.');
+        }
+    };
+
+    const openAddStaffModal = () => {
+        setModalType("add-staff");
+        setNewStaff({ name: '', email: '', detail: '', role: '' });
+    };
+
+    const closeAddStaffModal = () => {
+        setModalType("");
+        setNewStaff({ name: '', email: '', detail: '', role: '' });
+    };
+
+    const openEditStaffModal = async (staff) => {
+        setCurrentItem(staff);
+        setModalType("edit-staff");
+
+        if (staff.name) {
+            await fetchMedia(staff.name);
+        }
+    };
+
+    const openDeleteStaffModal = (staff) => {
+        setCurrentItem(staff);
+        setModalType("remove-staff");
+    };
+
+    const closeEditStaffModal = () => {
+        setModalType('');
+        setCurrentItem(null);
+    };
+
+    const handleAddStaff = async (e) => {
+        e.preventDefault();
+        try {
+            // Add staff to the database
+            const response = await axios.post(`${API_BASE_URL}/staff/`, newStaff);
+            const addedStaff = response.data;
+
+            // Upload the image using the staff's name as the tag
+            if (newImage.file || newImage.imageUrl) {
+                await handleImageSubmit(addedStaff.name); // Use the staff's name as the tag
+            }
+
+            setStaffList((prevList) => [...prevList, addedStaff]);
+            alert('Staff added successfully!');
+            closeAddStaffModal();
+        } catch (error) {
+            console.error('Error adding staff:', error.response?.data || error);
+            alert('Failed to add staff.');
+        }
+    };
+
+
+    const handleEditStaff = async (e) => {
+        e.preventDefault();
+        try {
+            const updatedStaff = { ...currentItem };
+
+            // Update staff details in the database
+            await axios.put(`${API_BASE_URL}/staff/${currentItem.id}`, updatedStaff);
+
+            // Upload the image using the staff's name as the tag
+            if (newImage.file || newImage.imageUrl) {
+                await handleImageSubmit(currentItem.name); // Use the staff's name as the tag
+            }
+
+            setStaffList((prevList) =>
+                prevList.map((staff) =>
+                    staff.id === currentItem.id ? updatedStaff : staff
+                )
+            );
+            alert('Staff updated successfully!');
+            closeEditStaffModal();
+        } catch (error) {
+            console.error('Error editing staff:', error.response?.data || error);
+            alert('Failed to edit staff.');
+        }
+    };
+
+
+    const handleDeleteStaff = async (staffId) => {
+        try {
+            await axios.delete(`${API_BASE_URL}/staff/${staffId}`);
+            setStaffList((prevList) => prevList.filter((staff) => staff.id !== staffId));
+            alert('Staff deleted successfully!');
+        } catch (error) {
+            console.error('Error deleting staff:', error.response?.data || error);
+            alert('Failed to delete staff.');
         }
     };
 
@@ -345,20 +499,27 @@ const Admin = () => {
 
                         {currentSection === "about-page" && (
                             <div id="about-page" className="content-section">
-                                <h1>About Page</h1>
+                                <h1>About Page - Staff Management</h1>
                                 <ul>
-                                    <li>
-                                        <span>Employee 1</span>
-                                        <div className="button-group">
-                                            <button onClick={() => openEditModal("Employee 1")}>
-                                                <i className="fas fa-pen"></i>
-                                            </button>
-                                            <button onClick={() => openRemoveModal("Employee 1")}>
-                                                <i className="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </li>
+                                    {staffList.length > 0 ? (
+                                        staffList.map((staff) => (
+                                            <li key={staff.id}>
+                                                <span>{`${staff.name} (${staff.role}) - ${staff.email}`}</span>
+                                                <div className="button-group">
+                                                    <button onClick={() => openEditStaffModal(staff)}>
+                                                        <i className="fas fa-pen"></i>
+                                                    </button>
+                                                    <button onClick={() => openDeleteStaffModal(staff)}>
+                                                        <i className="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </li>
+                                        ))
+                                    ) : (
+                                        <li>No staff found.</li>
+                                    )}
                                 </ul>
+                                <button onClick={openAddStaffModal}>Add New Staff</button>
                             </div>
                         )}
 
@@ -409,11 +570,25 @@ const Admin = () => {
                                                 required
                                             />
                                         </div>
+
+                                        {newItem.type == 'news' &&
+                                            (
+                                                <div className="form-group">
+                                                    <label>Date:</label>
+                                                    <input
+                                                        type="date"
+                                                        value={newItem.day}
+                                                        onChange={(e) => setNewItem({ ...newItem, day: e.target.value })}
+                                                        required
+                                                    />
+                                                </div>
+                                            )
+                                        }
+
                                         <div className="form-group">
                                             <label>Image URL:</label>
                                             <input
                                                 type="text"
-                                                value={newImage.imageUrl}
                                                 onChange={(e) => setNewImage({ ...newImage, imageUrl: e.target.value, file: null })}
                                             />
                                         </div>
@@ -460,11 +635,26 @@ const Admin = () => {
                                                 required
                                             />
                                         </div>
+
+                                        {currentItem.type == 'news' &&
+                                            (
+                                                <div className="form-group">
+                                                    <label>Date:</label>
+                                                    <input
+                                                        type="date"
+                                                        value={currentItem.day || ''}
+                                                        onChange={(e) => setCurrentItem({ ...currentItem, day: e.target.value })}
+                                                        required
+                                                    />
+                                                </div>
+                                            )
+                                        }
+
                                         <div className="form-group">
                                             <label>Image URL:</label>
                                             <input
                                                 type="text"
-                                                value={newImage.imageUrl}
+                                                defaultValue={newImage.imageUrl}
                                                 onChange={(e) => setNewImage({ ...newImage, imageUrl: e.target.value, file: null })}
                                             />
                                         </div>
@@ -473,6 +663,7 @@ const Admin = () => {
                                             <input
                                                 type="file"
                                                 accept="image/*"
+                                                defaultValue={newImage.file}
                                                 onChange={(e) => setNewImage({ ...newImage, file: e.target.files[0], imageUrl: '' })}
                                             />
                                         </div>
@@ -499,6 +690,169 @@ const Admin = () => {
                                 </div>
                             </div>
                         )}
+
+                        {modalType === "add-staff" && (
+                            <div className="modal open">
+                                <div className="modal-content">
+                                    <h2>Add New Staff</h2>
+                                    <form onSubmit={handleAddStaff}>
+                                        <div className="form-group">
+                                            <label>Name:</label>
+                                            <input
+                                                type="text"
+                                                value={newStaff.name}
+                                                onChange={(e) => setNewStaff({ ...newStaff, name: e.target.value })}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Email:</label>
+                                            <input
+                                                type="email"
+                                                value={newStaff.email}
+                                                onChange={(e) => setNewStaff({ ...newStaff, email: e.target.value })}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Detail:</label>
+                                            <textarea
+                                                rows="4"
+                                                value={newStaff.detail}
+                                                onChange={(e) => setNewStaff({ ...newStaff, detail: e.target.value })}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Role:</label>
+                                            <select
+                                                value={newStaff.role}
+                                                onChange={(e) => setNewStaff({ ...newStaff, role: e.target.value })}
+                                                required
+                                            >
+                                                <option value="" disabled>Select Role</option>
+                                                <option value="Head">Head</option>
+                                                <option value="Lecturer">Lecturer</option>
+                                                <option value="Staff">Staff</option>
+                                            </select>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Image URL:</label>
+                                            <input
+                                                type="text"
+                                                onChange={(e) => setNewImage({ ...newImage, imageUrl: e.target.value, file: null })}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Upload Image:</label>
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => setNewImage({ ...newImage, file: e.target.files[0], imageUrl: '' })}
+                                            />
+                                        </div>
+                                        <div className="button-group">
+                                            <button type="submit">Add</button>
+                                            <button type="button" onClick={closeAddStaffModal}>
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        )}
+
+                        {modalType === "edit-staff" && currentItem && (
+                            <div className="modal open">
+                                <div className="modal-content">
+                                    <h2>Edit Staff - {currentItem.name}</h2>
+                                    <form onSubmit={handleEditStaff}>
+                                        <div className="form-group">
+                                            <label>Name:</label>
+                                            <input
+                                                type="text"
+                                                value={currentItem.name}
+                                                onChange={(e) =>
+                                                    setCurrentItem({ ...currentItem, name: e.target.value })
+                                                }
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Email:</label>
+                                            <input
+                                                type="email"
+                                                value={currentItem.email}
+                                                onChange={(e) =>
+                                                    setCurrentItem({ ...currentItem, email: e.target.value })
+                                                }
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Detail:</label>
+                                            <textarea
+                                                rows="4"
+                                                value={currentItem.detail}
+                                                onChange={(e) =>
+                                                    setCurrentItem({ ...currentItem, detail: e.target.value })
+                                                }
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Role:</label>
+                                            <select
+                                                value={currentItem.role}
+                                                onChange={(e) => setCurrentItem({ ...currentItem, role: e.target.value })}
+                                                required
+                                            >
+                                                <option value="" disabled>Select Role</option>
+                                                <option value="Head">Head</option>
+                                                <option value="Lecturer">Lecturer</option>
+                                                <option value="Staff">Staff</option>
+                                            </select>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Image URL:</label>
+                                            <input
+                                                type="text"
+                                                defaultValue={newImage.imageUrl}
+                                                onChange={(e) => setNewImage({ ...newImage, imageUrl: e.target.value, file: null })}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Upload Image:</label>
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                defaultValue={newImage.file}
+                                                onChange={(e) => setNewImage({ ...newImage, file: e.target.files[0], imageUrl: '' })}
+                                            />
+                                        </div>
+                                        <div className="button-group">
+                                            <button type="submit">Save</button>
+                                            <button type="button" onClick={closeEditStaffModal}>
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        )}
+
+                        {modalType === "remove-staff" && (
+                            <div className="modal open">
+                                <div className="modal-content">
+                                    <h2>Remove {currentItem}?</h2>
+                                    <div class="button-group" style={{ justifyContent: 'center' }}>
+                                        <button onClick={() => handleDeleteStaff(currentItem.id)}>Yes</button>
+                                        <button onClick={closeModal}>No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                     </div>
                 </div>
             </div>

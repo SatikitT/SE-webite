@@ -188,8 +188,7 @@
     color: #555;
 }
 
-.modal-body-container input,
-.modal-body-container textarea {
+.modal-body-container input,textarea,select {
     width: 100%;
     padding: 12px;
     margin-bottom: 20px;

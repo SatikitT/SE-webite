@@ -18,6 +18,7 @@ const NewsPage = () => {
                     .slice(-8)
                     .reverse();
                 setNewsItems(filteredNews);
+                console.log(filteredNews);
             } catch (error) {
                 console.error('Error fetching news:', error);
             }
@@ -48,7 +49,7 @@ const NewsPage = () => {
         };
     }, []);
 
-    if (newsItems.length === 0) {
+    if (newsItems != null && newsItems.length === 0) {
         return <div>Loading news...</div>;
     }
 
@@ -65,8 +66,9 @@ const NewsPage = () => {
                     >
                         <EditableMedia mediaTag={item.title} mediaStyle={{ height: '180px', objectFit: 'cover' }} />
                         <div className="news-text">
+                            <h3>{item.day}</h3>
                             <h2>{item.title}</h2>
-                            <p className="news-link">{item.description || 'Read More'}</p>
+                            <p className="news-link">Read More</p>
                         </div>
                     </Link>
                 ))}

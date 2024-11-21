@@ -43,19 +43,20 @@
 
 .news-text h3 {
     color: #555;
+    margin-top: -5px;
 }
 
 .news-text h2 {
     border-bottom: 2px solid #e6aa2a;
     color: #333;
-    margin: 10px 0;
+    margin: -5px 0;
     font-size: 1.2em;
 }
 
 .news-link{
     color: #53aa48;
     font-size: 0.9em;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .news-link:hover {
