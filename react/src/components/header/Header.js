@@ -3,15 +3,16 @@ import '../../App.css'
 import logo from '../../assets/header/SE_logo.png';
 import Profile from '../../assets/header/profile.jpg';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
 import { InteractionStatus } from "@azure/msal-browser";
 import { loginRequest } from '../AuthConfig';
 
-function Header ({isAdmin = false}) {
+function Header({ isAdmin = false }) {
     const { instance, inProgress } = useMsal();
     const activeAccount = instance.getActiveAccount();
     const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const location = useLocation();
 
     const handleRedirect = () => {
         if (inProgress === InteractionStatus.None) {
@@ -34,8 +35,6 @@ function Header ({isAdmin = false}) {
         const handleScroll = () => {
             const header = document.querySelector('.header');
             const container = document.querySelector('.container');
-            const image = document.getElementById('monkey-image');
-            const imageBottom = image?.getBoundingClientRect().bottom - 500 || 0;
             const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
             if (currentScrollTop > lastScrollTop) {
@@ -52,6 +51,9 @@ function Header ({isAdmin = false}) {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+    const handleLogoClick = (e) => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     return (
         <header className='header'>
@@ -60,37 +62,23 @@ function Header ({isAdmin = false}) {
                 <hr className='header-gradient'></hr>
                 <div className='container'>
                     <div className='SElogo-container'>
-                        <Link to='/'>
+                        <Link to="/" onClick={handleLogoClick}>
                             <img src={logo} alt="SE Logo" height={'50em'} />
                         </Link>
                     </div>
 
                     <ul className='navs-container'>
-                        <li className='navs-button'>
-                            <Link to="/">Home</Link>
-                        </li>
-                        <li className='navs-button'>
-                            <Link to="/cooproom">Coop Room</Link>
-                        </li>
-                        <li className='navs-button'>
-                            <Link to="/forums">Forum</Link>
-                        </li>
-                        <li className='navs-button'>
-                            <Link to="/map">Map</Link>
-                        </li>
-                        <li className='navs-button'>
-                            <Link to="/program">Program</Link>
-                        </li>
-                        <li className='navs-button'>
-                            <Link to="/admission">Admission</Link>
-                        </li>
-                        <li className='navs-button'>
-                            <Link to="/about">About</Link>
-                        </li>
+                    <Link to="/" className='navs-button' onClick={handleLogoClick}>Home</Link>
+                        <Link to="/program" className='navs-button' onClick={handleLogoClick}>Program</Link>
+                        <Link to="/admission" className='navs-button' onClick={handleLogoClick}>Admission</Link>
+                        <Link to="/about" className='navs-button' onClick={handleLogoClick}>About</Link>
+                        <Link to="/cooproom" className='navs-button' onClick={handleLogoClick}>Room booking</Link>
+                        <Link to="/forums" className='navs-button' onClick={handleLogoClick}>Forums</Link>
+                        <Link to="/map" className='navs-button' onClick={handleLogoClick}>3D tour</Link>
                         {
                             isAdmin ? (
                                 <li className='navs-button'>
-                                <Link to="/admin">Admin only</Link>
+                                    <Link to="/admin">Admin only</Link>
                                 </li>
                             ) : (<></>)
                         }
@@ -103,13 +91,13 @@ function Header ({isAdmin = false}) {
                             </button>
                         </UnauthenticatedTemplate>
                         <AuthenticatedTemplate>
-                            <p style={{marginRight: "10px"}}>Welcome, {activeAccount ? activeAccount.name : "User"}!</p>
+                            <p style={{ marginRight: "10px" }}>Welcome, {activeAccount ? activeAccount.name : "User"}!</p>
 
-                            <div style={{height: "100%"}}>
+                            <div style={{ height: "100%" }}>
                                 <a href="#profile">
-                                    <img src={Profile} alt="profile" height={'40em'} style={{marginTop: "40%"}} />
+                                    <img src={Profile} alt="profile" height={'40em'} style={{ marginTop: "40%" }} />
                                 </a>
-                                
+
                                 <div className='dropdown-profile'>
                                     <a href="#profile">My Profile</a>
                                     <a href="#settings">Settings</a>

@@ -23,8 +23,10 @@ const Slider = () => {
   };
 
   useEffect(() => {
+    
     fetchAwards();
-
+    
+    
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -32,6 +34,19 @@ const Slider = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (slides.length > 0) {
+        resetSlideInterval(); // Start autoplay when slides are ready
+    }
+
+    return () => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current); // Cleanup interval when slides change
+        }
+    };
+}, [slides]); // Dependency array ensures this runs when `slides` changes
+
+  
   const resetSlideInterval = () => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -68,7 +83,7 @@ const Slider = () => {
                   <div className="slide-text">{slide.detail}</div>
                 </div>
                 <div className="slide-image">
-                  <EditableMedia mediaTag={slide.title} mediaStyle={{ width: '80%', height: 'auto', objectFit: 'cover', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }} />
+                  <EditableMedia mediaTag={slide.title} mediaStyle={{ width: '100%', height: '70vh', objectFit: 'cover', borderRadius: '10px' }} />
                 </div>
               </div>
             ))}

@@ -182,7 +182,7 @@ const Forum = ({ username }) => {
                                 className="post hoverable"
                                 onClick={() => handleViewDetails(question)}
                             >
-                                <div style={{ display: 'flex', justifyContent: 'space-aound' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between'}}>
                                     <div>
                                         <h3>{question.title}</h3>
                                         <p>
@@ -191,7 +191,7 @@ const Forum = ({ username }) => {
                                                 : question.content}
                                         </p>
                                     </div>
-                                    <EditableMedia mediaTag={question.title} mediaStyle={{ width: '100px', maxHeight: '100px'}} />
+                                        <EditableMedia mediaTag={question.title} mediaStyle={{ width: '100px', maxHeight: '100px',margin: '0 auto'}} />                                 
                                 </div>
 
                             </div>

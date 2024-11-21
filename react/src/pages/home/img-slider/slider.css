@@ -1,15 +1,15 @@
 /* Slider Container */
 .slider {
-  display: flex; /* Use flexbox for centering */
-  justify-content: center; /* Horizontally center */
-  align-items: center; /* Vertically center */
-  height: 100vh; /* Full viewport height */
-  width: 100%; /* Full width */
-  transform: scale(0.7); /* Scale to 80% of its original size */
-  transform-origin: center center; /* Ensure scaling happens from the center */
-  margin: 0 auto; /* Center the container */
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  height: 100vh; 
+  width: 100%; 
+  transform: scale(0.7); 
+  transform-origin: center center; 
+  margin: 0 auto; 
   overflow: hidden;
-  border-radius: 10px; /* Optional rounded corners */
+  border-radius: 10px;
 }
 
 /* Slider Wrapper */
@@ -31,7 +31,7 @@
 
 /* Slide Content */
 .slide-content {
-  width: 40%;
+  width: 30%;
   padding: 40px;
   margin-left: 10%;
   display: flex;
@@ -43,16 +43,18 @@
 }
 
 .slide-title {
-  font-size: 48px;
+  font-size: 4vh;
   font-weight: bold;
   margin-bottom: 20px;
   line-height: 1.2;
+  margin-right: 25px;
 }
 
 .slide-text {
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 3vh;
+  margin-bottom: 1vh;
   line-height: 1.5;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* Slide Image */
@@ -67,10 +69,9 @@
 
 .slide-image img {
   width: 100%;
-  height: 100%;
+  height: 70vh;
   object-fit: cover;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Navigation Arrows */
@@ -86,28 +87,33 @@
 .arrow {
   background: transparent;
   border: none;
-  font-size: 3rem;
+  font-size: 4em;
   cursor: pointer;
   color: #ffae00;
 }
 
+.arrows :hover{
+  color: #d39000;
+  transition: 0.3s;
+}
+
 .next {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .prev {
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 /* Dots */
 .dots {
-  position: absolute;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
   justify-content: center;
-  gap: 12px;
+  margin-top: 20px;
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  gap: 15px;
 }
 
 .dot {
