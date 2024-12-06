@@ -159,7 +159,6 @@ const Admin = () => {
         }
     };
 
-
     const handleImageSubmit = async (tag) => {
         const formData = new FormData();
         formData.append('tag', tag);
@@ -360,6 +359,7 @@ const Admin = () => {
             console.error('Error deleting staff:', error.response?.data || error);
             alert('Failed to delete staff.');
         }
+        closeModal();
     };
 
     return (
@@ -532,7 +532,7 @@ const Admin = () => {
                                             const timeReserved = room.time.map(hour => `${hour}:00`).join(", ");
                                             return (
                                                 <li key={room.id}>
-                                                    <span>{`Room ${room.room_number} reserved on ${room.day} at ${timeReserved}`}</span>
+                                                    <span>{`Room ${room.room_number} reserved on ${room.day} at ${timeReserved} by ${room.reserver}`}</span>
                                                     <button onClick={() => removeRoom(room.id)}>
                                                         <i className="fas fa-trash"></i>
                                                     </button>
@@ -844,7 +844,7 @@ const Admin = () => {
                         {modalType === "remove-staff" && (
                             <div className="modal open">
                                 <div className="modal-content">
-                                    <h2>Remove {currentItem}?</h2>
+                                    <h2>Remove {currentItem.name}?</h2>
                                     <div class="button-group" style={{ justifyContent: 'center' }}>
                                         <button onClick={() => handleDeleteStaff(currentItem.id)}>Yes</button>
                                         <button onClick={closeModal}>No</button>

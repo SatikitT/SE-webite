@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Home from './pages/home/Home';
 import About from './pages/about/About';
 import Forum from './pages/forum2/Forum';
@@ -20,12 +20,15 @@ import ScrollToTop from './components/ScrollToTop';
 import { MsalProvider } from "@azure/msal-react";
 import './App.css';
 
+import axios from "axios";
+import { API_BASE_URL } from "./api";
+
 const admin = ["Satikit Tapbumrong", "Jirawatt Chimmanee", "Natchapon Sukthep"];
- 
+
 const App = ({ instance }) => {
   const [activeAccount, setActiveAccount] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
-
+  
   useEffect(() => {
     const accounts = instance.getAllAccounts();
     if (accounts.length > 0) {
@@ -68,19 +71,20 @@ const App = ({ instance }) => {
         <Header isAdmin={isAdmin} />
         <Routes>
           <Route path="/" element={<Home isAdmin={isAdmin} />} />
-          <Route
-            path="/cooproom"
-            element={
-              <CoopRoom username={activeAccount ? activeAccount.name : ""} />
-            }
-          />
+
+          {activeAccount != null ? (
+            <><Route path="/cooproom" element={<CoopRoom username={activeAccount ? activeAccount.name : ""} />} />
+            <Route path="/forums" element={<Forum username={activeAccount ? activeAccount.name : ""} />} /></>
+          ) : (<></>)
+          }
+
+
           <Route path="/about" element={<About />} />
-          
+
           {isAdmin && (
             <Route path="/admin" element={<Admin />} />
           )}
-          
-          <Route path="/forums" element={<Forum />} />
+
           <Route path="/map" element={<Map />} />
           <Route path="/admission" element={<Admission />} />
           <Route path="/program" element={<Program />} />

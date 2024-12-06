@@ -152,15 +152,6 @@
     text-align: center;
 }
 
-.leaderMember img {
-    width: 35vh;
-    height: 40vh;
-    border-radius: 20px;
-    margin: 20px;
-    cursor: pointer;
-    object-fit: cover;
-}
-
 /* Lecturer Section */
 .lecturerSection {
     display: flex;
@@ -175,7 +166,6 @@
     justify-content: center;
     align-items: center;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
 }
 
 .lecturerMembers .teamMember {

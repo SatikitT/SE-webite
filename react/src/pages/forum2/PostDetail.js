@@ -80,7 +80,7 @@ const PostDetail = () => {
             <div className="question-detail">
                 <p className="posted-by">Posted by u/{post.username}</p>
                 <h1>{post.title}</h1>
-                <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
+                <div className='question-body' dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
 
                 {post.title && <EditableMedia mediaTag={post.title} />}
 

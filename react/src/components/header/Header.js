@@ -72,8 +72,10 @@ function Header({ isAdmin = false }) {
                         <Link to="/program" className='navs-button' onClick={handleLogoClick}>Program</Link>
                         <Link to="/admission" className='navs-button' onClick={handleLogoClick}>Admission</Link>
                         <Link to="/about" className='navs-button' onClick={handleLogoClick}>About</Link>
+                        <AuthenticatedTemplate>
                         <Link to="/cooproom" className='navs-button' onClick={handleLogoClick}>Room booking</Link>
                         <Link to="/forums" className='navs-button' onClick={handleLogoClick}>Forums</Link>
+                        </AuthenticatedTemplate>
                         <Link to="/map" className='navs-button' onClick={handleLogoClick}>3D tour</Link>
                         {
                             isAdmin ? (

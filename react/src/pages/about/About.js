@@ -138,7 +138,7 @@ const App = () => {
                         height: '20vh',
                         width: '20vh',
                         objectFit: 'cover',
-                        marginRight: '2vh'
+                        margin: 'auto'
                       }}
                     />
                 </div>
@@ -158,7 +158,6 @@ const App = () => {
                         height: '20vh',
                         width: '20vh',
                         objectFit: 'cover',
-                        marginRight: '2vh'
                       }}
                     />
                   </div>
@@ -179,7 +178,6 @@ const App = () => {
                         height: '20vh',
                         width: '20vh',
                         objectFit: 'cover',
-                        marginRight: '2vh'
                       }}
                     />
                   </div>
@@ -218,7 +216,7 @@ const App = () => {
               <strong>Email:</strong> {modalContent.email}
             </p>
             <p>
-              <strong>Description:</strong> {modalContent.description}
+              <strong>Description:</strong> {modalContent.detail}
             </p>
           </div>
         </div>
