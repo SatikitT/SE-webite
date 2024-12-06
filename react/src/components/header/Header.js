@@ -3,16 +3,15 @@ import '../../App.css'
 import logo from '../../assets/header/SE_logo.png';
 import Profile from '../../assets/header/profile.jpg';
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
 import { InteractionStatus } from "@azure/msal-browser";
-import { loginRequest } from '../AuthConfig';
+import { loginRequest } from '../Auth';
 
 function Header({ isAdmin = false }) {
     const { instance, inProgress } = useMsal();
     const activeAccount = instance.getActiveAccount();
     const [isLoggingIn, setIsLoggingIn] = useState(false);
-    const location = useLocation();
 
     const handleRedirect = () => {
         if (inProgress === InteractionStatus.None) {
@@ -34,7 +33,6 @@ function Header({ isAdmin = false }) {
         let lastScrollTop = 0;
         const handleScroll = () => {
             const header = document.querySelector('.header');
-            const container = document.querySelector('.container');
             const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
             if (currentScrollTop > lastScrollTop) {

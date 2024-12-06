@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { EventType } from "@azure/msal-browser";
-import { msalInstance } from './components/AuthConfig';
+import { msalInstance } from './components/Auth';
 
 if (msalInstance.getActiveAccount() && msalInstance.getAllAccounts().length > 0) {
   msalInstance.setActiveAccount(msalInstance.getActiveAccount()[0]);

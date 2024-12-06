@@ -1,5 +1,5 @@
 import { LogLevel } from "@azure/msal-browser";
-import { PublicClientApplication, EventType } from "@azure/msal-browser";
+import { PublicClientApplication} from "@azure/msal-browser";
 
 export const msalConfig = {
     auth: {
