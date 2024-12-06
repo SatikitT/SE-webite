@@ -6,7 +6,6 @@ import Footer from '../../components/footer/Footer.js';
 import News from './img-slider/NewSPage.js'
 import Slider from './img-slider/slider.js';
 import EditableMedia from '../../components/editableimage/EditableImage.js';
-import { Link } from 'react-router-dom';
 
 const Home = ({isAdmin}) => {
 

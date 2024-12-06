@@ -32,7 +32,6 @@ const Forum = ({ username }) => {
             return;
         }
 
-        const postPayload = { title, content: details, username };
         try {
             const response = await axios.post(`${API_BASE_URL}/forums/1/posts/?title=${title}&content=${details}&username=${username}`);
 

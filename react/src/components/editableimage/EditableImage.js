@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '../../api';
 
@@ -50,7 +50,7 @@ const EditableMedia = ({ mediaTag, mediaStyle}) => {
             {mediaType === 'video' ? (
                 <video src={mediaSrc} style={combinedStyles} autoPlay loop muted />
             ) : (
-                <img src={mediaSrc} style={combinedStyles} />
+                <img alt="" src={mediaSrc} style={combinedStyles} />
             )}
         </div>
     );

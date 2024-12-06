@@ -5,7 +5,6 @@ import "@babylonjs/loaders/glTF";
 const Map = () => {
     const canvasRef = useRef(null);
     const [hoverInfo, setHoverInfo] = useState([]);
-    const [sceneMeshes, setSceneMeshes] = useState([]);
     var ms = [];
 
     useEffect(() => {
@@ -119,7 +118,7 @@ const Map = () => {
             window.removeEventListener("resize", () => engine.resize());
         };
 
-    }, [sceneMeshes]);
+    }, []);
 
     return (
         <>

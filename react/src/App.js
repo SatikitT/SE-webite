@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/home/Home';
 import About from './pages/about/About';
 import Forum from './pages/forum2/Forum';
@@ -20,8 +20,6 @@ import ScrollToTop from './components/ScrollToTop';
 import { MsalProvider } from "@azure/msal-react";
 import './App.css';
 
-import axios from "axios";
-import { API_BASE_URL } from "./api";
 
 const admin = ["Satikit Tapbumrong", "Jirawatt Chimmanee", "Natchapon Sukthep"];
 

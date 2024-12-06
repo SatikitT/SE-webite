@@ -103,12 +103,6 @@ const Admin = () => {
         setHomeMenuOpen((prev) => !prev);
     };
 
-    const saveEdit = (e) => {
-        e.preventDefault();
-        alert(`Saved: ${currentItem}`);
-        closeModal();
-    };
-
     const removeRoom = async (roomId) => {
         try {
             await axios.delete(`${API_BASE_URL}/reservations/${roomId}`);
@@ -571,7 +565,7 @@ const Admin = () => {
                                             />
                                         </div>
 
-                                        {newItem.type == 'news' &&
+                                        {newItem.type === 'news' &&
                                             (
                                                 <div className="form-group">
                                                     <label>Date:</label>
@@ -636,7 +630,7 @@ const Admin = () => {
                                             />
                                         </div>
 
-                                        {currentItem.type == 'news' &&
+                                        {currentItem.type === 'news' &&
                                             (
                                                 <div className="form-group">
                                                     <label>Date:</label>
