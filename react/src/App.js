@@ -70,19 +70,10 @@ const App = ({ instance }) => {
         <Routes>
           <Route path="/" element={<Home isAdmin={isAdmin} />} />
 
-          {activeAccount != null ? (
-            <><Route path="/cooproom" element={<CoopRoom username={activeAccount ? activeAccount.name : ""} />} />
-            <Route path="/forums" element={<Forum username={activeAccount ? activeAccount.name : ""} />} /></>
-          ) : (<></>)
-          }
-
-
+          <><Route path="/cooproom" element={<CoopRoom username={activeAccount ? activeAccount.name : ""} />} />
+          <Route path="/forums" element={<Forum username={activeAccount ? activeAccount.name : ""} />} /></>
           <Route path="/about" element={<About />} />
-
-          {isAdmin && (
-            <Route path="/admin" element={<Admin />} />
-          )}
-
+          <Route path="/admin" element={<Admin />} />
           <Route path="/map" element={<Map />} />
           <Route path="/admission" element={<Admission />} />
           <Route path="/program" element={<Program />} />
